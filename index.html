@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><script>window.__resources = {"prodImg1": "assets/img-23f38191.webp", "prodImgMini": "assets/img-5d4f4d72.webp", "prodImgCombo": "assets/img-795cd235.webp", "prodImgTrashPedal": "assets/img-a336499c.webp", "prodImgTrashDuo": "assets/img-b8eec626.webp", "prodImg2": "assets/img-6df5a1db.webp", "prodImgHero": "assets/img-2be8f435.webp", "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "assets/js-ab3f2294.js", "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "assets/js-5d4f9831.js"};</script>
+<html lang="vi"><head><script>window.__resources = {"prodImg1": "assets/img-23f38191.webp", "prodImgMini": "assets/img-5d4f4d72.webp", "prodImgCombo": "assets/img-795cd235.webp", "prodImgTrashPedal": "assets/img-a336499c.webp", "prodImgTrashDuo": "assets/img-b8eec626.webp", "prodImg2": "assets/img-6df5a1db.webp", "prodImgHero": "assets/img-2be8f435.webp", "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "assets/js-ab3f2294.js", "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "assets/js-5d4f9831.js"};</script>
 <meta charset="utf-8">
 <link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/icon-16.png">
@@ -7,6 +7,44 @@
 <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/icon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/icon-180.png">
+<title>Hanori | Gia dụng tối giản cho tổ ấm Việt</title>
+<meta name="description" content="Hanori - thương hiệu gia dụng Việt: thùng gạo, hộp đựng đồ mini, thùng rác thông minh thiết kế tối giản, bền đẹp. Mua chính hãng trên Shopee, bảo hành 12 tháng.">
+<link rel="canonical" href="https://hanori.vn/">
+<meta name="theme-color" content="#5E4530">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hanori">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://hanori.vn/">
+<meta property="og:title" content="Hanori | Gia dụng tối giản cho tổ ấm Việt">
+<meta property="og:description" content="Thùng gạo, hộp đựng đồ mini, thùng rác thông minh thiết kế tối giản, bền đẹp — đồng hành cùng người Việt xây tổ ấm. Chính hãng trên Shopee.">
+<meta property="og:image" content="https://hanori.vn/assets/img-702fc387.webp">
+<meta property="og:image:width" content="936">
+<meta property="og:image:height" content="941">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hanori | Gia dụng tối giản cho tổ ấm Việt">
+<meta name="twitter:description" content="Thùng gạo, hộp đựng đồ mini, thùng rác thông minh thiết kế tối giản, bền đẹp — đồng hành cùng người Việt xây tổ ấm.">
+<meta name="twitter:image" content="https://hanori.vn/assets/img-702fc387.webp">
+
+<link rel="manifest" href="manifest.json">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Hanori",
+  "url": "https://hanori.vn/",
+  "logo": "https://hanori.vn/assets/favicon/icon-512.png",
+  "description": "Hanori - thương hiệu gia dụng Việt với các sản phẩm thiết kế tối giản, bền đẹp cho tổ ấm hiện đại.",
+  "email": "hello@hanori.vn",
+  "sameAs": [
+    "https://facebook.com/hanori.official",
+    "https://instagram.com/hanori.official",
+    "https://shopee.vn/hanori.official"
+  ]
+}
+</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -1260,4 +1298,21 @@ class Component extends DCLogic {
 </script>
 
 
+<script>
+(function(){
+  function label(el, text){ if (el && !el.getAttribute('aria-label')) el.setAttribute('aria-label', text); }
+  function applyLabels(){
+    document.querySelectorAll('a[href^="https://facebook.com"]').forEach(el=>label(el,'Facebook Hanori'));
+    document.querySelectorAll('a[href^="https://instagram.com"]').forEach(el=>label(el,'Instagram Hanori'));
+    document.querySelectorAll('a[href^="https://zalo.me"]').forEach(el=>label(el,'Chat Zalo với Hanori'));
+    document.querySelectorAll('a[href^="https://shopee.vn"]').forEach(el=>{ if(!el.textContent.trim()) label(el,'Mua trên Shopee'); });
+    document.querySelectorAll('a[href="#top"]').forEach(el=>label(el,'Về trang chủ Hanori'));
+    document.querySelectorAll('input[placeholder]').forEach(el=>{ if(!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.getAttribute('placeholder')); });
+  }
+  applyLabels();
+  const mo = new MutationObserver(applyLabels);
+  mo.observe(document.body, {childList:true, subtree:true});
+  setTimeout(()=>mo.disconnect(), 8000);
+})();
+</script>
 </body></html>
