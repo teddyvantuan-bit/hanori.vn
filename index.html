@@ -11,6 +11,61 @@
 
 
 <script src="assets/js-814df104.js"></script>
+<style id="__hnr_responsive">
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+
+/* ===== Tablet & below ===== */
+@media (max-width: 1024px) {
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="grid-template-columns: 1.2fr 1fr 1fr"]{grid-template-columns:repeat(2,1fr) !important}
+}
+
+/* ===== Phone ===== */
+@media (max-width: 640px) {
+  /* section paddings: shrink the 56/64/80/100px desktop gutters */
+  [style*="padding: 8px 56px"]{padding:8px 16px !important}
+  [style*="padding: 14px 56px"]{padding:10px 16px !important}
+  [style*="padding: 12px 56px"]{padding:10px 14px !important}
+  [style*="padding: 64px 56px 0px"]{padding:28px 18px 0px !important}
+  [style*="padding: 0px 56px"]{padding:0px 18px !important}
+  [style*="padding: 100px 56px"]{padding:48px 18px !important}
+  [style*="padding: 64px 56px"]{padding:36px 18px !important}
+  [style*="padding: 80px 56px"]{padding:44px 18px !important}
+  [style*="padding: 56px 64px"]{padding:32px 18px !important}
+  [style*="padding: 20px 56px 40px"]{padding:16px 18px 28px !important}
+  [style*="padding: 100px 0px"]{padding:48px 0px !important}
+
+  /* grids: collapse to a single column */
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="grid-template-columns: 0.9fr 1.1fr"],
+  [style*="grid-template-columns: 1.2fr 1fr 1fr"]{grid-template-columns:1fr !important;gap:20px !important}
+  [style*="grid-template-columns: repeat(4, 1fr)"]{grid-template-columns:repeat(2,1fr) !important}
+
+  /* hero text column can take full width once stacked */
+  [style*="max-width: 520px"]{max-width:100% !important}
+
+  /* headline sizes: desktop serif sizes are oversized on a narrow column */
+  h1[style*="font-size: 52px"]{font-size:32px !important;line-height:1.2 !important}
+  h2[style*="font-size: 42px"]{font-size:26px !important}
+
+  /* sticky header: hide the anchor-nav links and search bar, keep logo + CTA */
+  [style*="position: sticky"] a[href="#mission"],
+  [style*="position: sticky"] a[href="#achievements"],
+  [style*="position: sticky"] a[href="#reviews"],
+  [style*="position: sticky"] a[href="#contact"]{display:none !important}
+  [style*="position: sticky"] [style*="max-width: 380px"]{display:none !important}
+  [style*="position: sticky"] [style*="padding: 14px 56px"]{gap:12px !important}
+
+  /* top promo strip: allow it to wrap instead of forcing one line */
+  [style*="justify-content: center"][style*="gap: 36px"]{flex-wrap:wrap !important;row-gap:4px !important;gap:12px !important}
+
+  /* floating bottom widgets: smaller footprint on narrow screens */
+  [style*="position: fixed"][style*="left: 24px"][style*="bottom: 24px"]{padding:9px 12px !important;font-size:11px !important;max-width:44vw}
+  [style*="position: fixed"][style*="right: 24px"][style*="bottom: 24px"]{right:14px !important;bottom:14px !important}
+}
+</style>
 </head>
 <body><div id="__hnr_loading" style="position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:#F7F1E6;transition:opacity 0.45s ease;">
 <img src="assets/logo-loading.png" alt="Hanori" style="width:160px;max-width:40vw;height:auto;animation:__hnr_pulse 1.6s ease-in-out infinite;">
