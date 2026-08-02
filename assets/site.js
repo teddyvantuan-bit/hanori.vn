@@ -32,17 +32,21 @@
   var chips = document.querySelectorAll(".chip[data-category]");
   var cards = document.querySelectorAll(".product-card[data-category]");
   if (chips.length && cards.length) {
+    var applyFilter = function (cat) {
+      chips.forEach(function (c) { c.classList.toggle("active", c.getAttribute("data-category") === cat); });
+      cards.forEach(function (card) {
+        var show = cat === "all" || card.getAttribute("data-category") === cat;
+        card.classList.toggle("filtered-out", !show);
+      });
+    };
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {
-        chips.forEach(function (c) { c.classList.remove("active"); });
-        chip.classList.add("active");
-        var cat = chip.getAttribute("data-category");
-        cards.forEach(function (card) {
-          var show = cat === "all" || card.getAttribute("data-category") === cat;
-          card.style.display = show ? "" : "none";
-        });
+        applyFilter(chip.getAttribute("data-category"));
       });
     });
+    var urlCat = new URLSearchParams(location.search).get("category");
+    var validCat = Array.prototype.some.call(chips, function (c) { return c.getAttribute("data-category") === urlCat; });
+    if (urlCat && validCat) applyFilter(urlCat);
   }
 
   // ===== Milestone tabs (gioi-thieu.html) =====
@@ -76,7 +80,7 @@
 
   // ===== Reveal on scroll (sections + staggered grids) =====
   var revealTargets = document.querySelectorAll(
-    ".reveal, .values-grid, .commit-list, .product-grid, .stat-grid, .trust-grid, .hero-chips"
+    ".reveal, .values-grid, .commit-list, .product-grid, .stat-grid, .trust-grid, .hero-chips, .category-grid"
   );
   if (reduceMotion || !("IntersectionObserver" in window)) {
     revealTargets.forEach(function (t) { t.classList.add("in-view"); });
