@@ -49,7 +49,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -67,9 +67,8 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="/index.html" class="brand">
+    <a href="/index.html" class="brand" aria-label="Hanori - Trang chủ">
       <img src="/assets/img-a0d27ee1.webp" alt="Hanori">
-      <span>Hanori</span>
     </a>
     <nav class="main-nav">
       <a href="/index.html" class="active">Trang chủ</a>
@@ -314,7 +313,6 @@
       <div class="footer-col">
         <div class="footer-brand">
           <img src="/assets/img-a0d27ee1.webp" alt="Hanori">
-          <span>Hanori</span>
         </div>
         <p>Sản phẩm gia dụng thông minh, thiết kế tối giản cho tổ ấm Việt — hiện có mặt chính thức trên Shopee.</p>
       </div>
@@ -344,6 +342,16 @@
     </div>
   </div>
 </footer>
+
+<div class="contact-fab">
+  <div class="contact-fab-menu">
+    <a class="contact-fab-item zalo" href="https://zalo.me/84962818892" target="_blank" rel="noopener" aria-label="Chat Zalo với Hanori" title="Chat Zalo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+    <a class="contact-fab-item messenger" href="https://m.me/hanorivietnam" target="_blank" rel="noopener" aria-label="Nhắn tin Messenger" title="Messenger"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.15 2 11.27c0 2.9 1.44 5.49 3.7 7.19V22l3.38-1.86c.9.25 1.87.38 2.92.38 5.52 0 10-4.15 10-9.27C22 6.15 17.52 2 12 2zm1.02 12.48-2.55-2.72-4.98 2.72 5.48-5.8 2.61 2.72 4.92-2.72-5.48 5.8z"/></svg></a>
+    <a class="contact-fab-item facebook" href="https://www.facebook.com/hanorivietnam" target="_blank" rel="noopener" aria-label="Facebook Hanori" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.5 9.88v-6.99H7.9V12h2.6V9.8c0-2.57 1.53-4 3.87-4 1.12 0 2.29.2 2.29.2v2.52h-1.29c-1.27 0-1.67.79-1.67 1.6V12h2.84l-.45 2.89h-2.39v6.99A10 10 0 0 0 22 12z"/></svg></a>
+  </div>
+  <button type="button" class="contact-fab-toggle" aria-label="Mở kênh hỗ trợ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></button>
+</div>
+
 <script src="/assets/site.js" defer></script>
 
 </body>

@@ -60,6 +60,23 @@
     });
   }
 
+  // ===== Floating contact widget =====
+  var fabToggle = document.querySelector(".contact-fab-toggle");
+  var fabMenu = document.querySelector(".contact-fab-menu");
+  if (fabToggle && fabMenu) {
+    fabToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = fabMenu.classList.toggle("open");
+      fabToggle.classList.toggle("open", open);
+    });
+    document.addEventListener("click", function (e) {
+      if (!fabMenu.classList.contains("open")) return;
+      if (e.target.closest(".contact-fab")) return;
+      fabMenu.classList.remove("open");
+      fabToggle.classList.remove("open");
+    });
+  }
+
   // ===== Loading overlay fade-out =====
   function hideLoader() {
     var el = document.getElementById("__hnr_loading");
