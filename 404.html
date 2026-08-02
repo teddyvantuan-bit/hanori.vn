@@ -18,10 +18,12 @@
   img { width:96px; height:96px; margin-bottom:20px; }
   h1 { font-family: Lora, serif; font-size:28px; color:#5E4530; margin-bottom:10px; }
   p { font-size:15px; color:#6b5c4c; margin-bottom:24px; line-height:1.5; }
+  .actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
   a {
     display:inline-block; background:#C1694A; color:#fff; text-decoration:none;
     padding:12px 26px; border-radius:999px; font-weight:600; font-size:14px;
   }
+  a.outline { background:transparent; color:#5E4530; border:1.5px solid rgba(90,64,38,0.2); }
 </style>
 </head>
 <body>
@@ -29,7 +31,10 @@
     <img src="/assets/favicon/icon-192.png" alt="Hanori">
     <h1>Không tìm thấy trang</h1>
     <p>Trang bạn đang tìm không tồn tại hoặc đã được di chuyển.</p>
-    <a href="/">Về trang chủ Hanori</a>
+    <div class="actions">
+      <a href="/index.html">Về trang chủ</a>
+      <a href="/san-pham.html" class="outline">Xem sản phẩm</a>
+    </div>
   </div>
 </body>
 </html>
