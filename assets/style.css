@@ -418,6 +418,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .hero-chips { justify-content: flex-start; }
   .hero-chip { font-size: 12px; }
 
+  .commit-row {
+    grid-template-columns: 36px 1fr;
+    grid-template-areas: "num icon" "text text";
+    gap: 6px 14px;
+    padding: 24px 2px;
+  }
+  .commit-num { grid-area: num; font-size: 13px; }
+  .commit-row-icon { grid-area: icon; justify-self: end; width: 34px; height: 34px; }
+  .commit-row-icon svg { width: 16px; height: 16px; }
+  .commit-text { grid-area: text; margin-top: 4px; }
+  .commit-text h3 { font-size: 16.5px; }
+  .commit-text p { font-size: 13px; max-width: none; }
+
   .values-grid, .product-grid, .product-grid.compact, .reviews-grid, .stat-grid, .trust-grid, .contact-grid, .footer-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -509,19 +522,33 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 50%; background: var(--accent);
 }
 
-/* ===== Commitment cards (replaces fabricated testimonials) ===== */
-.commit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.commit-card {
-  background: var(--card); border: 1px solid var(--hairline); border-radius: var(--radius-card);
-  padding: 26px 22px; display: flex; flex-direction: column; gap: 12px;
+/* ===== Commitments — editorial numbered list (replaces fabricated testimonials) ===== */
+.commit-list { border-top: 1px solid var(--hairline); max-width: 880px; margin: 0 auto; }
+.commit-row {
+  display: grid; grid-template-columns: 64px 1fr 48px; align-items: center; gap: 28px;
+  padding: 30px 4px; border-bottom: 1px solid var(--hairline);
+  position: relative; overflow: hidden;
 }
-.commit-icon {
-  width: 42px; height: 42px; border-radius: 12px; background: var(--accent-soft);
-  display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
+.commit-row::before {
+  content: ""; position: absolute; inset: 0; left: -100%;
+  background: var(--panel); transition: left 0.4s cubic-bezier(0.16,1,0.3,1); z-index: 0;
 }
-.commit-icon svg { width: 20px; height: 20px; }
-.commit-card h3 { font-size: 16.5px; }
-.commit-card p { font-size: 13.5px; color: var(--ink-soft); }
+.commit-row:hover::before { left: 0; }
+.commit-num {
+  font-family: 'Lora', serif; font-size: 15px; font-weight: 600; color: var(--accent);
+  position: relative; z-index: 1;
+}
+.commit-text { position: relative; z-index: 1; }
+.commit-text h3 { font-size: 19px; margin-bottom: 6px; transition: transform 0.3s ease; }
+.commit-text p { font-size: 14px; color: var(--ink-soft); max-width: 520px; }
+.commit-row:hover .commit-text h3 { transform: translateX(6px); }
+.commit-row-icon {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  position: relative; z-index: 1; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), background 0.3s ease;
+}
+.commit-row-icon svg { width: 18px; height: 18px; }
+.commit-row:hover .commit-row-icon { transform: rotate(-12deg) scale(1.1); background: var(--accent); color: #fff; }
 
 /* ============================================================
    Motion & interaction layer
@@ -537,7 +564,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 
 .values-grid .value-card,
-.commit-grid .commit-card,
+.commit-list .commit-row,
 .product-grid .product-card,
 .stat-grid .stat-card,
 .trust-grid .trust-item,
@@ -547,7 +574,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
 }
 .values-grid.in-view .value-card,
-.commit-grid.in-view .commit-card,
+.commit-list.in-view .commit-row,
 .product-grid.in-view .product-card,
 .stat-grid.in-view .stat-card,
 .trust-grid.in-view .trust-item,
@@ -620,7 +647,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ===== Reduced motion & touch: strip non-essential motion ===== */
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .values-grid .value-card, .commit-grid .commit-card, .product-grid .product-card,
+  .reveal, .values-grid .value-card, .commit-list .commit-row, .product-grid .product-card,
   .stat-grid .stat-card, .trust-grid .trust-item, .hero-chips .hero-chip, .word-reveal .word {
     opacity: 1 !important; transform: none !important; transition: none !important;
   }

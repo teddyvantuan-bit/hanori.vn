@@ -76,7 +76,7 @@
 
   // ===== Reveal on scroll (sections + staggered grids) =====
   var revealTargets = document.querySelectorAll(
-    ".reveal, .values-grid, .commit-grid, .product-grid, .stat-grid, .trust-grid, .hero-chips"
+    ".reveal, .values-grid, .commit-list, .product-grid, .stat-grid, .trust-grid, .hero-chips"
   );
   if (reduceMotion || !("IntersectionObserver" in window)) {
     revealTargets.forEach(function (t) { t.classList.add("in-view"); });
