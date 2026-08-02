@@ -24,4 +24,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://hanori.vn/chinh-sach-bao-mat.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://hanori.vn/dieu-khoan-su-dung.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://hanori.vn/chinh-sach-doi-tra.html</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

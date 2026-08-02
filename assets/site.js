@@ -60,6 +60,126 @@
     });
   }
 
+  // ===== Motion preferences =====
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var isFinePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+
+  // ===== Sticky header scroll state =====
+  var siteHeader = document.querySelector(".site-header");
+  if (siteHeader) {
+    var onScrollHeader = function () {
+      siteHeader.classList.toggle("scrolled", window.scrollY > 12);
+    };
+    onScrollHeader();
+    window.addEventListener("scroll", onScrollHeader, { passive: true });
+  }
+
+  // ===== Reveal on scroll (sections + staggered grids) =====
+  var revealTargets = document.querySelectorAll(
+    ".reveal, .values-grid, .commit-grid, .product-grid, .stat-grid, .trust-grid, .hero-chips"
+  );
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    revealTargets.forEach(function (t) { t.classList.add("in-view"); });
+  } else if (revealTargets.length) {
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          Array.prototype.forEach.call(el.children, function (child, i) {
+            child.style.transitionDelay = Math.min(i * 0.07, 0.5) + "s";
+          });
+          requestAnimationFrame(function () { el.classList.add("in-view"); });
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    revealTargets.forEach(function (t) { io.observe(t); });
+  }
+
+  // ===== Animated stat counters =====
+  var statNums = document.querySelectorAll(".stat-card .num");
+  if (statNums.length && !reduceMotion) {
+    var animateCount = function (el) {
+      var text = el.textContent.trim();
+      var match = text.match(/^(\d+)(\D*)$/);
+      if (!match) return;
+      var target = parseInt(match[1], 10);
+      var suffix = match[2];
+      var start = null;
+      var duration = 900;
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    };
+    if ("IntersectionObserver" in window) {
+      var statIo = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            animateCount(entry.target);
+            statIo.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.6 }
+      );
+      statNums.forEach(function (el) { statIo.observe(el); });
+    }
+  }
+
+  // ===== Hero image parallax tilt (desktop, fine pointer only) =====
+  var heroImage = document.querySelector(".hero-image");
+  if (heroImage && isFinePointer && !reduceMotion) {
+    var hero = document.querySelector(".hero");
+    hero.addEventListener("mousemove", function (e) {
+      var rect = hero.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width - 0.5;
+      var py = (e.clientY - rect.top) / rect.height - 0.5;
+      heroImage.style.transform =
+        "perspective(800px) rotateY(" + (px * 6) + "deg) rotateX(" + (py * -6) + "deg)";
+    });
+    hero.addEventListener("mouseleave", function () {
+      heroImage.style.transform = "perspective(800px) rotateY(0) rotateX(0)";
+    });
+  }
+
+  // ===== Custom cursor (desktop, fine pointer, no reduced motion) =====
+  if (isFinePointer && !reduceMotion) {
+    var dot = document.createElement("div");
+    dot.className = "cursor-dot";
+    var ring = document.createElement("div");
+    ring.className = "cursor-ring";
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+    document.body.classList.add("has-custom-cursor");
+
+    var mouseX = -100, mouseY = -100, ringX = -100, ringY = -100;
+    window.addEventListener("mousemove", function (e) {
+      mouseX = e.clientX; mouseY = e.clientY;
+      dot.style.left = mouseX + "px";
+      dot.style.top = mouseY + "px";
+    });
+    function loopCursor() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.left = ringX + "px";
+      ring.style.top = ringY + "px";
+      requestAnimationFrame(loopCursor);
+    }
+    loopCursor();
+
+    document.querySelectorAll("a, button, .chip, .milestone-tab").forEach(function (el) {
+      el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
+      el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+    });
+  }
+
   // ===== Floating contact widget =====
   var fabToggle = document.querySelector(".contact-fab-toggle");
   var fabMenu = document.querySelector(".contact-fab-menu");
