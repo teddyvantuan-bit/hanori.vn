@@ -347,8 +347,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .footer-brand { display: flex; align-items: center; margin-bottom: 14px; }
 .footer-brand img { height: 44px; width: auto; border-radius: 10px; }
 .footer-col h4 { color: #fff; font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 16px; }
-.footer-col a, .footer-col p { display: block; font-size: 13.5px; margin-bottom: 10px; color: rgba(255,255,255,0.72); }
-.footer-col a:hover { color: #fff; }
+.footer-col p { font-size: 13.5px; margin-bottom: 10px; color: rgba(255,255,255,0.72); }
+.footer-col-toggle {
+  display: flex; align-items: center; gap: 6px;
+  color: #fff; font-size: 13.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 16px; cursor: default; pointer-events: none;
+}
+.footer-col-toggle svg { display: none; width: 12px; height: 12px; transition: transform 0.2s ease; }
+.footer-col-links { display: flex; flex-direction: column; }
+.footer-col-links a { display: block; font-size: 13.5px; margin-bottom: 10px; color: rgba(255,255,255,0.72); }
+.footer-col-links a:hover { color: #fff; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,0.14); padding-top: 24px;
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
@@ -405,7 +413,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .hero { padding: 28px 0 0; }
   .hero-copy h1 { font-size: 30px; }
   .hero-copy p.lead { font-size: 15px; }
-  .hero-actions .btn { flex: 1; justify-content: center; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .hero-actions .btn { width: 100%; justify-content: center; font-size: 14px; padding: 13px 18px; white-space: normal; text-align: center; }
+  .hero-chips { justify-content: flex-start; }
+  .hero-chip { font-size: 12px; }
 
   .values-grid, .product-grid, .product-grid.compact, .reviews-grid, .stat-grid, .trust-grid, .contact-grid, .footer-grid {
     grid-template-columns: 1fr;
@@ -413,6 +424,18 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
   .footer-grid { text-align: left; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+  .footer-col-toggle {
+    width: 100%; justify-content: space-between; cursor: pointer; pointer-events: auto;
+    padding: 16px 0; margin-bottom: 0; border-bottom: 1px solid rgba(255,255,255,0.12);
+    background: none; border-left: none; border-right: none; border-top: none;
+    font-family: inherit;
+  }
+  .footer-col-toggle svg { display: block; }
+  .footer-col-toggle.open svg { transform: rotate(180deg); }
+  .footer-col-links { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .footer-col-links.open { max-height: 260px; padding-top: 14px; }
+  .footer-col:first-child { margin-bottom: 8px; }
 
   .milestones { gap: 8px; }
   .milestone-tab { padding: 8px 16px; font-size: 13px; }

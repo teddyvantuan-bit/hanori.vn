@@ -181,6 +181,16 @@
     });
   });
 
+  // ===== Footer accordion (mobile) =====
+  document.querySelectorAll(".footer-col-toggle").forEach(function (toggle) {
+    var links = toggle.nextElementSibling;
+    if (!links || !links.classList.contains("footer-col-links")) return;
+    toggle.addEventListener("click", function () {
+      var open = links.classList.toggle("open");
+      toggle.classList.toggle("open", open);
+    });
+  });
+
   // ===== Mobile nav accordion (Chính sách) =====
   document.querySelectorAll(".mobile-nav-toggle").forEach(function (toggle) {
     var targetId = toggle.getAttribute("data-target");
