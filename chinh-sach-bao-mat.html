@@ -75,6 +75,17 @@
       <a href="/san-pham.html">Sản phẩm</a>
       <a href="/gioi-thieu.html">Giới thiệu</a>
       <a href="/lien-he.html">Liên hệ</a>
+      <div class="nav-dropdown">
+        <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+          Chính sách
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="/chinh-sach-bao-mat.html">Chính sách bảo mật</a>
+      <a href="/dieu-khoan-su-dung.html">Điều khoản sử dụng</a>
+      <a href="/chinh-sach-doi-tra.html">Đổi trả & bảo hành</a>
+        </div>
+      </div>
     </nav>
     <div class="header-actions">
       <a href="https://shopee.vn/zc75anjpw2" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
@@ -92,6 +103,15 @@
     <a href="/san-pham.html">Sản phẩm</a>
     <a href="/gioi-thieu.html">Giới thiệu</a>
     <a href="/lien-he.html">Liên hệ</a>
+    <button type="button" class="mobile-nav-toggle" data-target="mnav-policies">
+      Chính sách
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="mobile-nav-submenu" id="mnav-policies">
+      <a href="/chinh-sach-bao-mat.html">Chính sách bảo mật</a>
+    <a href="/dieu-khoan-su-dung.html">Điều khoản sử dụng</a>
+    <a href="/chinh-sach-doi-tra.html">Đổi trả & bảo hành</a>
+    </div>
     <a href="https://shopee.vn/zc75anjpw2" target="_blank" rel="noopener" class="btn btn-primary btn-block">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Mua trên Shopee
     </a>
@@ -100,14 +120,19 @@
 <section class="page-hero">
   <div class="container">
     <span class="eyebrow">Pháp lý</span>
-    <h1>Chính sách bảo mật</h1>
+    <h1 class="word-reveal">Chính sách bảo mật</h1>
   </div>
 </section>
 <section class="section-tight">
   <div class="container">
-    <div class="legal-wrap reveal">
-      <p class="legal-updated">Cập nhật lần cuối: 02/08/2026</p>
-      <div class="legal-section"><h2>1. Phạm vi áp dụng</h2><p>hanori.vn là trang giới thiệu sản phẩm chính thức của thương hiệu Hanori. Mọi giao dịch đặt hàng, thanh toán và vận chuyển được thực hiện qua gian hàng chính hãng của Hanori trên Shopee, nơi áp dụng chính sách bảo mật riêng của Shopee đối với thông tin đơn hàng.</p></div><div class="legal-section"><h2>2. Thông tin chúng tôi thu thập</h2><p>hanori.vn hiện không có biểu mẫu đặt hàng hay thanh toán trực tiếp trên website. Chúng tôi chỉ thu thập thông tin khi anh/chị chủ động liên hệ qua hotline, Zalo, Messenger hoặc Facebook, bao gồm:</p><ul><li>Họ tên</li><li>Số điện thoại hoặc tài khoản mạng xã hội dùng để liên hệ</li><li>Nội dung trao đổi, câu hỏi hoặc góp ý về sản phẩm</li></ul></div><div class="legal-section"><h2>3. Mục đích sử dụng thông tin</h2><p>Thông tin thu thập được dùng để tư vấn sản phẩm, hỗ trợ đặt hàng qua Shopee, xử lý yêu cầu đổi trả/bảo hành và ghi nhận góp ý nhằm cải thiện dịch vụ.</p></div><div class="legal-section"><h2>4. Lưu trữ và chia sẻ thông tin</h2><p>Thông tin liên hệ chỉ được lưu trữ trong phạm vi cần thiết để hỗ trợ khách hàng và không được chia sẻ cho bên thứ ba ngoài mục đích nêu trên, trừ khi có yêu cầu từ cơ quan nhà nước có thẩm quyền theo quy định pháp luật.</p></div><div class="legal-section"><h2>5. Cookie & công cụ đo lường</h2><p>Tại thời điểm hiện tại, hanori.vn chưa sử dụng cookie theo dõi quảng cáo. Nếu trong tương lai website triển khai công cụ đo lường truy cập (ví dụ Google Analytics), chính sách này sẽ được cập nhật để phản ánh đầy đủ.</p></div><div class="legal-section"><h2>6. Quyền của khách hàng</h2><p>Anh/chị có quyền yêu cầu chỉnh sửa hoặc xoá thông tin liên hệ đã cung cấp cho Hanori bất kỳ lúc nào bằng cách liên hệ qua các kênh bên dưới.</p></div><div class="legal-section"><h2>7. Liên hệ</h2><p>Mọi thắc mắc về chính sách bảo mật, vui lòng liên hệ hotline 0962 818 892 (8:30 – 22:00) hoặc email admin@hanori.vn.</p></div>
+    <div class="legal-layout">
+      <nav class="legal-toc">
+        <a href="#muc-1">Phạm vi áp dụng</a><a href="#muc-2">Thông tin chúng tôi thu thập</a><a href="#muc-3">Mục đích sử dụng thông tin</a><a href="#muc-4">Lưu trữ và chia sẻ thông tin</a><a href="#muc-5">Cookie & công cụ đo lường</a><a href="#muc-6">Quyền của khách hàng</a><a href="#muc-7">Liên hệ</a>
+      </nav>
+      <div class="legal-wrap reveal">
+        <p class="legal-updated">Cập nhật lần cuối: 02/08/2026</p>
+        <div class="legal-section" id="muc-1"><span class="legal-section-icon">1</span><h2>Phạm vi áp dụng</h2><p>hanori.vn là trang giới thiệu sản phẩm chính thức của thương hiệu Hanori. Mọi giao dịch đặt hàng, thanh toán và vận chuyển được thực hiện qua gian hàng chính hãng của Hanori trên Shopee, nơi áp dụng chính sách bảo mật riêng của Shopee đối với thông tin đơn hàng.</p></div><div class="legal-section" id="muc-2"><span class="legal-section-icon">2</span><h2>Thông tin chúng tôi thu thập</h2><p>hanori.vn hiện không có biểu mẫu đặt hàng hay thanh toán trực tiếp trên website. Chúng tôi chỉ thu thập thông tin khi anh/chị chủ động liên hệ qua hotline, Zalo, Messenger hoặc Facebook, bao gồm:</p><ul><li>Họ tên</li><li>Số điện thoại hoặc tài khoản mạng xã hội dùng để liên hệ</li><li>Nội dung trao đổi, câu hỏi hoặc góp ý về sản phẩm</li></ul></div><div class="legal-section" id="muc-3"><span class="legal-section-icon">3</span><h2>Mục đích sử dụng thông tin</h2><p>Thông tin thu thập được dùng để tư vấn sản phẩm, hỗ trợ đặt hàng qua Shopee, xử lý yêu cầu đổi trả/bảo hành và ghi nhận góp ý nhằm cải thiện dịch vụ.</p></div><div class="legal-section" id="muc-4"><span class="legal-section-icon">4</span><h2>Lưu trữ và chia sẻ thông tin</h2><p>Thông tin liên hệ chỉ được lưu trữ trong phạm vi cần thiết để hỗ trợ khách hàng và không được chia sẻ cho bên thứ ba ngoài mục đích nêu trên, trừ khi có yêu cầu từ cơ quan nhà nước có thẩm quyền theo quy định pháp luật.</p></div><div class="legal-section" id="muc-5"><span class="legal-section-icon">5</span><h2>Cookie & công cụ đo lường</h2><p>Tại thời điểm hiện tại, hanori.vn chưa sử dụng cookie theo dõi quảng cáo. Nếu trong tương lai website triển khai công cụ đo lường truy cập (ví dụ Google Analytics), chính sách này sẽ được cập nhật để phản ánh đầy đủ.</p></div><div class="legal-section" id="muc-6"><span class="legal-section-icon">6</span><h2>Quyền của khách hàng</h2><p>Anh/chị có quyền yêu cầu chỉnh sửa hoặc xoá thông tin liên hệ đã cung cấp cho Hanori bất kỳ lúc nào bằng cách liên hệ qua các kênh bên dưới.</p></div><div class="legal-section" id="muc-7"><span class="legal-section-icon">7</span><h2>Liên hệ</h2><p>Mọi thắc mắc về chính sách bảo mật, vui lòng liên hệ hotline 0962 818 892 (8:30 – 22:00) hoặc email admin@hanori.vn.</p></div>
+      </div>
     </div>
   </div>
 </section>

@@ -149,35 +149,132 @@
     });
   }
 
-  // ===== Custom cursor (desktop, fine pointer, no reduced motion) =====
+  // ===== Magnetic buttons (subtle pull toward cursor, replaces cursor gimmick) =====
   if (isFinePointer && !reduceMotion) {
-    var dot = document.createElement("div");
-    dot.className = "cursor-dot";
-    var ring = document.createElement("div");
-    ring.className = "cursor-ring";
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-    document.body.classList.add("has-custom-cursor");
-
-    var mouseX = -100, mouseY = -100, ringX = -100, ringY = -100;
-    window.addEventListener("mousemove", function (e) {
-      mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.left = mouseX + "px";
-      dot.style.top = mouseY + "px";
+    document.querySelectorAll(".btn-primary, .contact-fab-toggle").forEach(function (el) {
+      el.classList.add("btn-magnetic");
+      el.addEventListener("mousemove", function (e) {
+        var rect = el.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        el.style.transform = "translate(" + x * 0.18 + "px, " + y * 0.18 + "px)";
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transform = "";
+      });
     });
-    function loopCursor() {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      ring.style.left = ringX + "px";
-      ring.style.top = ringY + "px";
-      requestAnimationFrame(loopCursor);
-    }
-    loopCursor();
+  }
 
-    document.querySelectorAll("a, button, .chip, .milestone-tab").forEach(function (el) {
-      el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
-      el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+  // ===== Nav dropdown (Chính sách) =====
+  document.querySelectorAll(".nav-dropdown").forEach(function (dd) {
+    var toggle = dd.querySelector(".nav-dropdown-toggle");
+    if (!toggle) return;
+    toggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = dd.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
+  });
+  document.addEventListener("click", function (e) {
+    document.querySelectorAll(".nav-dropdown.open").forEach(function (dd) {
+      if (!dd.contains(e.target)) dd.classList.remove("open");
+    });
+  });
+
+  // ===== Mobile nav accordion (Chính sách) =====
+  document.querySelectorAll(".mobile-nav-toggle").forEach(function (toggle) {
+    var targetId = toggle.getAttribute("data-target");
+    var target = document.getElementById(targetId);
+    if (!target) return;
+    toggle.addEventListener("click", function () {
+      var open = target.classList.toggle("open");
+      toggle.classList.toggle("open", open);
+    });
+  });
+
+  // ===== Scroll progress bar =====
+  var progressBar = document.createElement("div");
+  progressBar.className = "scroll-progress";
+  document.body.appendChild(progressBar);
+  var onScrollProgress = function () {
+    var h = document.documentElement;
+    var scrollable = h.scrollHeight - h.clientHeight;
+    var pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+    progressBar.style.width = pct + "%";
+  };
+  onScrollProgress();
+  window.addEventListener("scroll", onScrollProgress, { passive: true });
+
+  // ===== Back to top =====
+  var backToTop = document.createElement("button");
+  backToTop.type = "button";
+  backToTop.className = "back-to-top";
+  backToTop.setAttribute("aria-label", "Lên đầu trang");
+  backToTop.innerHTML =
+    '<svg class="ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18"></circle></svg>' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  document.body.appendChild(backToTop);
+  var ringCircle = backToTop.querySelector(".ring circle");
+  var onScrollBackToTop = function () {
+    var h = document.documentElement;
+    var scrollable = h.scrollHeight - h.clientHeight;
+    var pct = scrollable > 0 ? h.scrollTop / scrollable : 0;
+    backToTop.classList.toggle("visible", h.scrollTop > 400);
+    if (ringCircle) ringCircle.style.strokeDashoffset = String(116 - pct * 116);
+  };
+  onScrollBackToTop();
+  window.addEventListener("scroll", onScrollBackToTop, { passive: true });
+  backToTop.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  });
+
+  // ===== Word-reveal headings =====
+  document.querySelectorAll(".word-reveal").forEach(function (el) {
+    var text = el.textContent;
+    el.innerHTML = text
+      .split(" ")
+      .map(function (w) { return '<span class="word">' + w + "&nbsp;</span>"; })
+      .join("");
+  });
+  var wordRevealTargets = document.querySelectorAll(".word-reveal");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    wordRevealTargets.forEach(function (t) { t.classList.add("in-view"); });
+  } else if (wordRevealTargets.length) {
+    var wrIo = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.querySelectorAll(".word").forEach(function (w, i) {
+            w.style.transitionDelay = i * 0.05 + "s";
+          });
+          entry.target.classList.add("in-view");
+          wrIo.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.4 }
+    );
+    wordRevealTargets.forEach(function (t) { wrIo.observe(t); });
+  }
+
+  // ===== Legal page scrollspy =====
+  var tocLinks = document.querySelectorAll(".legal-toc a");
+  if (tocLinks.length && "IntersectionObserver" in window) {
+    var sections = Array.prototype.map.call(tocLinks, function (a) {
+      return document.querySelector(a.getAttribute("href"));
+    }).filter(Boolean);
+    var spyIo = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var id = "#" + entry.target.id;
+          tocLinks.forEach(function (a) {
+            a.classList.toggle("active", a.getAttribute("href") === id);
+          });
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+    sections.forEach(function (s) { spyIo.observe(s); });
   }
 
   // ===== Floating contact widget =====
