@@ -168,13 +168,16 @@ HANORI.products = [
     price: 75000, orig: 120000, sku: "DB1511-1"
   },
   {
-    id: "hop-mini-treo-tuong", cat: "tam", badge: "", g: 11,
+    id: "hop-mini-treo-tuong", cat: "tam", badge: "-34%", g: 11,
     img: _p("hop-mini-treo-tuong", "01"),
-    name: "Hộp đựng đồ mini treo tường",
+    name: "Hộp đựng đồ mini treo tường (hành tỏi / mỹ phẩm)",
     tag: "Ngăn nắp phòng tắm",
-    desc: "Hộp nhỏ gọn dán tường, nắp lật tiện lấy đồ, đựng bông tẩy trang, phụ kiện trang điểm hay hành tỏi gọn gàng.",
-    material: "Nhựa trong + nắp kẻ caro", sizes: "9,5 × 9,5 × 12,6 cm",
-    contactOnly: true
+    desc: "Hộp nhỏ gọn có nắp đậy chống bụi, đựng bông tẩy trang, phụ kiện trang điểm hay hành tỏi gọn gàng. Chọn bộ 2 hoặc 4 hộp.",
+    material: "PET + ABS", sizes: "9,5 × 13,5 × 11 cm",
+    variants: [
+      { name: "Bộ 2 hộp", sku: "A1170-2", price: 96000, orig: 145000 },
+      { name: "Bộ 4 hộp", sku: "A1170-4", price: 188000, orig: 290000 }
+    ]
   },
   {
     id: "hop-khan-giay", cat: "decor", badge: "Dễ thương", g: 16,
@@ -200,22 +203,26 @@ HANORI.products = [
     price: 78000, orig: 105000, sku: "D2261-1"
   },
   {
-    id: "hop-giay-moai", cat: "decor", badge: "Mới", g: 12,
+    id: "hop-giay-moai", cat: "decor", badge: "-38%", g: 12,
     img: _p("hop-giay-moai", "01"),
-    name: "Hộp giấy tượng Moai (đầu tượng)",
+    name: "Hộp giấy tượng Moai (đầu tượng) trang trí",
     tag: "Phòng khách",
-    desc: "Tạo hình tượng Moai độc đáo, rút giấy ngay phía trước, điểm nhấn cá tính cho bàn làm việc. Màu kem, xanh olive, đen.",
-    material: "Nhựa", sizes: "Kem · Xanh olive · Đen",
-    contactOnly: true
+    desc: "Tạo hình tượng Moai độc đáo, rút giấy ngay phía trước, điểm nhấn cá tính cho bàn làm việc, phòng khách. Chất liệu nhựa ABS cao cấp.",
+    material: "Nhựa ABS", sizes: "Kem · Xanh olive · Đen",
+    variants: [
+      { name: "Kem", sku: "MOAI-KEM", price: 136000, orig: 220000, vimg: 8 },
+      { name: "Xanh olive", sku: "MOAI-OLIVE", price: 136000, orig: 220000, vimg: 3 },
+      { name: "Đen", sku: "MOAI-DEN", price: 136000, orig: 220000, vimg: 10 }
+    ]
   },
   {
     id: "tong-do-cat-toc", cat: "decor", badge: "Mới", g: 10,
     img: _p("tong-do-cat-toc", "01"),
-    name: "Tông đơ cắt tóc không dây Hanori",
+    name: "Tông đơ cắt tóc không dây Hanori HN-809A",
     tag: "Thiết bị gia đình",
-    desc: "Tông đơ không dây, màn hình hiển thị trên thân máy, 4 cữ lược đi kèm, cần gạt bên hông, sạc USB. Bộ phụ kiện đầy đủ.",
+    desc: "Tông đơ không dây, màn hình hiển thị pin trên thân máy, lưỡi cắt điều chỉnh, kèm 4 cữ lược, sạc USB. Bộ phụ kiện đầy đủ.",
     material: "ABS + thép", sizes: "Bộ đầy đủ",
-    contactOnly: true
+    price: 354000, sku: "HN-809A"
   },
   {
     id: "bo-phu-kien", cat: "decor", badge: "Mua kèm", g: 18,
