@@ -1251,3 +1251,73 @@ h1, h2, .word-reveal { font-weight: 800; }
   .hs-dots { bottom: 10px; gap: 6px; }
   .hs-dot { width: 7px; height: 7px; } .hs-dot.active { width: 20px; }
 }
+
+/* ============================================================
+   Mobile polish — thu gọn chữ & khoảng cách cho dễ nhìn
+   ============================================================ */
+@media (max-width: 640px){
+  .section { padding: 34px 0; }
+  .section-tight { padding: 24px 0; }
+  .section-head { margin-bottom: 22px; }
+  .section-head h2 { font-size: 20px; }
+  .section-head p { font-size: 12.5px; }
+  .eyebrow { font-size: 10.5px; padding: 5px 11px; margin-bottom: 10px; }
+
+  /* USP: 2x2 gọn */
+  .usp-grid { grid-template-columns: 1fr 1fr; }
+  .usp-item { padding: 13px 12px; gap: 10px; border-right: 1px solid var(--hairline); border-bottom: none; }
+  .usp-item:nth-child(2n) { border-right: none; }
+  .usp-item:nth-child(-n+2) { border-bottom: 1px solid var(--hairline); }
+  .usp-ic { width: 36px; height: 36px; border-radius: 10px; }
+  .usp-ic svg { width: 17px; height: 17px; }
+  .usp-tx strong { font-size: 12px; }
+  .usp-tx span { font-size: 10.5px; }
+
+  /* Voucher gọn */
+  .voucher { padding: 13px 12px 11px; }
+  .voucher .vval { font-size: 18px; }
+  .voucher .vsub { font-size: 11px; margin: 1px 0 8px; }
+  .voucher .vcopy { padding: 7px; font-size: 11px; }
+
+  /* Danh mục thấp hơn */
+  .category-card { aspect-ratio: 16 / 9; }
+  .category-overlay { padding: 15px; }
+  .category-overlay h3 { font-size: 16px; }
+  .category-overlay p { font-size: 11.5px; }
+  .category-link { font-size: 11.5px; }
+
+  /* Spotlight gọn */
+  .spotlight-copy { padding: 22px 18px 26px; }
+  .spotlight-copy h2 { font-size: 20px; }
+  .spotlight-copy p { font-size: 13px; margin-bottom: 16px; }
+  .spotlight-price .now { font-size: 22px; }
+  .spotlight-price .old { font-size: 13px; }
+  .spotlight-media { min-height: 210px; }
+
+  /* Feature cards gọn */
+  .feature-grid { gap: 11px; }
+  .feature-card { padding: 16px 14px; border-radius: 15px; }
+  .feature-card .fic { width: 38px; height: 38px; border-radius: 11px; margin-bottom: 11px; }
+  .feature-card .fic svg { width: 19px; height: 19px; }
+  .feature-card h3 { font-size: 13.5px; margin-bottom: 6px; }
+  .feature-card p { font-size: 12px; line-height: 1.5; }
+
+  /* CTA band gọn */
+  .cta-band { padding: 32px 20px; border-radius: 20px; }
+  .cta-band h2 { font-size: 20px; }
+  .cta-band p { font-size: 13px; margin-bottom: 18px; }
+  .cta-band .btn { font-size: 13.5px; padding: 12px 20px; }
+
+  /* Trust strip gọn */
+  .trust-item .label { font-size: 13px; }
+  .trust-item .sub { font-size: 11px; }
+}
+@media (max-width: 400px){
+  .usp-tx strong { font-size: 11.5px; }
+  .voucher .vval { font-size: 17px; }
+  .section-head h2 { font-size: 19px; }
+}
+
+/* Đảm bảo eyebrow luôn nằm trên tiêu đề trong section-head */
+.section-head { display: flex; flex-direction: column; align-items: center; }
+.section-head .eyebrow { align-self: center; }
