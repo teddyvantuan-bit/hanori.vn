@@ -1050,3 +1050,10 @@ h1, h2, .word-reveal { font-weight: 800; }
 .hnr-logo-word .dot { color: var(--accent); }
 .site-footer .hnr-logo-word { color: #fff; }
 .brand .hnr-logo-mark { width: 28px; height: 28px; }
+
+/* Fix: cột gallery không co lại khiến cột thông tin bị đẩy ra ngoài */
+.pv-inner { align-items: stretch; }
+.pv-gallery, .pv-info { min-width: 0; }
+.pv-gallery { overflow: hidden; }
+.pv-gallery .pv-media img { max-width: 100%; }
+@media (max-width: 620px){ .pv-inner { grid-template-columns: 1fr; } }
