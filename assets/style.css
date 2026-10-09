@@ -1229,3 +1229,25 @@ h1, h2, .word-reveal { font-weight: 800; }
 @media (min-width: 1025px){
   .product-grid.cols-4 { grid-template-columns: repeat(4, 1fr); gap: 22px; }
 }
+
+/* ============================================================
+   Hero slider (banner tự chạy) — full width
+   ============================================================ */
+.hero-slider { position: relative; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; background: var(--panel); }
+.hero-slides { display: flex; will-change: transform; transition: transform .6s cubic-bezier(.16,1,.3,1); }
+.hero-slide { flex: 0 0 100%; display: block; }
+.hero-slide img { width: 100%; height: clamp(340px, 46vw, 680px); object-fit: cover; object-position: center; display: block; }
+.hs-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,.82); color: var(--brown-dark); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); opacity: 0; transition: opacity .2s ease, background .15s ease, transform .15s ease; z-index: 3; }
+.hs-nav svg { width: 22px; height: 22px; }
+.hero-slider:hover .hs-nav { opacity: 1; }
+.hs-nav:hover { background: #fff; }
+.hs-nav.prev { left: 20px; } .hs-nav.next { right: 20px; }
+.hs-dots { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+.hs-dot { width: 9px; height: 9px; padding: 0; border-radius: 999px; background: rgba(255,255,255,.55); box-shadow: 0 1px 4px rgba(0,0,0,.3); transition: width .25s ease, background .2s ease; cursor: pointer; }
+.hs-dot.active { width: 28px; background: #fff; }
+@media (max-width: 760px){
+  .hero-slide img { height: auto; aspect-ratio: 2 / 1; }
+  .hs-nav { display: none; }
+  .hs-dots { bottom: 10px; gap: 6px; }
+  .hs-dot { width: 7px; height: 7px; } .hs-dot.active { width: 20px; }
+}

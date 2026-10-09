@@ -325,4 +325,44 @@
   document.querySelectorAll('a[href*="instagram.com"]').forEach(function (el) { label(el, "Instagram Hanori"); });
   document.querySelectorAll('a[href*="zalo.me"]').forEach(function (el) { label(el, "Chat Zalo với Hanori"); });
   document.querySelectorAll('a[href*="shopee.vn"]').forEach(function (el) { if (!el.textContent.trim()) label(el, "Mua trên Shopee"); });
+
+  // ===== Hero banner slider (auto) =====
+  var hsTrack = document.querySelector("[data-hs-track]");
+  if (hsTrack) {
+    var hsCount = hsTrack.children.length;
+    var hsIdx = 0, hsTimer = null;
+    var hsDotsWrap = document.querySelector("[data-hs-dots]");
+    var hsDots = [];
+    for (var hi = 0; hi < hsCount; hi++) {
+      (function (i) {
+        var d = document.createElement("button");
+        d.type = "button"; d.className = "hs-dot"; d.setAttribute("aria-label", "Ảnh " + (i + 1));
+        d.addEventListener("click", function () { hsGo(i); hsReset(); });
+        hsDotsWrap.appendChild(d); hsDots.push(d);
+      })(hi);
+    }
+    function hsRender() {
+      hsTrack.style.transform = "translateX(-" + (hsIdx * 100) + "%)";
+      hsDots.forEach(function (d, i) { d.classList.toggle("active", i === hsIdx); });
+    }
+    function hsGo(i) { hsIdx = (i % hsCount + hsCount) % hsCount; hsRender(); }
+    function hsNext() { hsGo(hsIdx + 1); }
+    function hsPrev() { hsGo(hsIdx - 1); }
+    function hsStart() { if (!reduceMotion && hsCount > 1) hsTimer = setInterval(hsNext, 5000); }
+    function hsReset() { clearInterval(hsTimer); hsStart(); }
+    hsRender(); hsStart();
+    var hsEl = document.querySelector(".hero-slider");
+    hsEl.addEventListener("mouseenter", function () { clearInterval(hsTimer); });
+    hsEl.addEventListener("mouseleave", hsStart);
+    var hsN = document.querySelector("[data-hs-next]"); if (hsN) hsN.addEventListener("click", function () { hsNext(); hsReset(); });
+    var hsP = document.querySelector("[data-hs-prev]"); if (hsP) hsP.addEventListener("click", function () { hsPrev(); hsReset(); });
+    var hsSX = 0, hsSY = 0;
+    hsTrack.addEventListener("touchstart", function (e) { hsSX = e.touches[0].clientX; hsSY = e.touches[0].clientY; clearInterval(hsTimer); }, { passive: true });
+    hsTrack.addEventListener("touchend", function (e) {
+      var dx = e.changedTouches[0].clientX - hsSX, dy = e.changedTouches[0].clientY - hsSY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? hsNext() : hsPrev(); }
+      hsStart();
+    }, { passive: true });
+  }
+
 })();
