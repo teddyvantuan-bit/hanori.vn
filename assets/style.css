@@ -1224,3 +1224,8 @@ h1, h2, .word-reveal { font-weight: 800; }
   .flash-title .fire { font-size: 24px; }
   .flash-head { margin-bottom: 18px; }
 }
+
+/* Desktop: lưới sản phẩm trang chủ 4 cột cho đều hàng (flash 4, bán chạy 8) */
+@media (min-width: 1025px){
+  .product-grid.cols-4 { grid-template-columns: repeat(4, 1fr); gap: 22px; }
+}

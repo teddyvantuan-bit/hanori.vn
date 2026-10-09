@@ -231,7 +231,7 @@
     if (!cart.length) {
       inner.innerHTML =
         '<div class="cart-head"><h3>Giỏ hàng</h3><button type="button" class="cart-x" data-close>' + ICON_X + "</button></div>" +
-        '<div class="cart-empty"><p>Giỏ hàng đang trống.</p><a href="/san-pham.html" class="btn btn-primary">Xem sản phẩm</a></div>';
+        '<div class="cart-empty"><p>Giỏ hàng đang trống.</p><a href="/san-pham/" class="btn btn-primary">Xem sản phẩm</a></div>';
       return;
     }
     var rows = cart.map(function (it, i) {
