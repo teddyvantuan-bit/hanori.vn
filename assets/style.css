@@ -1327,3 +1327,17 @@ h1, h2, .word-reveal { font-weight: 800; }
 .category-overlay h3 { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.45); }
 .category-overlay p { color: rgba(255,255,255,.95); text-shadow: 0 1px 5px rgba(0,0,0,.4); }
 .category-overlay .category-link { color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.4); }
+
+/* ============================================================
+   Tag sản phẩm v2 — bỏ badge đè ảnh, đưa xuống thân thẻ
+   % giảm = chip đỏ nổi bật cạnh giá; tag = chip nhỏ xíu
+   ============================================================ */
+.product-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.tag-chip { font-size: 10px; font-weight: 700; letter-spacing: .02em; color: var(--brown); background: var(--chip); padding: 2px 8px; border-radius: 999px; line-height: 1.7; }
+.product-price { align-items: center; }
+.pp-off { font-size: 13.5px; font-weight: 800; color: #fff; background: var(--accent); padding: 2px 8px; border-radius: 7px; letter-spacing: -0.01em; line-height: 1.5; }
+@media (max-width: 640px){
+  .product-meta { gap: 6px; margin-bottom: 1px; }
+  .tag-chip { font-size: 9.5px; padding: 1px 7px; }
+  .pp-off { font-size: 12px; padding: 2px 7px; border-radius: 6px; }
+}

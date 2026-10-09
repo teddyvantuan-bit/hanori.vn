@@ -69,8 +69,8 @@
     return Math.round((r.orig - r.price) / r.orig * 100);
   }
   function cardHTML(p) {
-    var tagBadge = p.badge ? '<span class="product-badge tag-badge">' + esc(p.badge) + "</span>" : "";
-    var priceBlock, cta, badge = tagBadge;
+    var tagChip = p.badge ? '<span class="tag-chip">' + esc(p.badge) + "</span>" : "";
+    var priceBlock, cta;
     if (p.contactOnly) {
       priceBlock = '<div class="product-price"><span class="pp-contact">Liên hệ báo giá</span></div>';
       cta =
@@ -81,12 +81,12 @@
       var hasVar = !!p.variants;
       var orig = repVariant(p).orig;
       var pct = discountPct(p);
-      if (pct) badge = '<span class="product-badge sale">-' + pct + "%</span>" + tagBadge;
       priceBlock =
         '<div class="product-price">' +
         (hasVar ? '<span class="pp-from">từ</span> ' : "") +
         '<span class="pp-now">' + vnd(mp) + "</span>" +
         (orig && orig > mp ? '<span class="pp-old">' + vnd(orig) + "</span>" : "") +
+        (pct ? '<span class="pp-off">-' + pct + "%</span>" : "") +
         "</div>";
       cta =
         '<button type="button" class="btn btn-primary btn-block btn-sm" data-add="' + p.id + '">' + ICON_CART + " Thêm vào giỏ</button>" +
@@ -96,12 +96,11 @@
     return (
       '<div class="product-card" data-category="' + p.cat + '">' +
         '<div class="product-thumb" data-view="' + p.id + '">' +
-          badge +
           '<img src="' + p.img + '" alt="' + esc(p.name) + '" loading="lazy">' +
           '<span class="product-quickview">Xem chi tiết</span>' +
         "</div>" +
         '<div class="product-body">' +
-          '<span class="product-tag">' + esc(p.tag) + "</span>" +
+          '<div class="product-meta"><span class="product-tag">' + esc(p.tag) + "</span>" + tagChip + "</div>" +
           '<h3 class="product-name" data-view="' + p.id + '">' + esc(p.name) + "</h3>" +
           note +
           '<p class="product-desc">' + esc(p.desc) + "</p>" +
