@@ -193,7 +193,14 @@
     inner.innerHTML =
       '<button type="button" class="pv-close" data-close aria-label="Đóng">' + ICON_X + "</button>" +
       '<div class="pv-gallery">' +
-        '<div class="pv-media"><img src="' + mainSrc + '" alt="' + esc(p.name) + '"></div>' +
+        '<div class="pv-media">' +
+          '<img src="' + mainSrc + '" alt="' + esc(p.name) + '">' +
+          (g.length > 1 ?
+            '<button type="button" class="pv-nav prev" data-pvnav="-1" aria-label="Ảnh trước"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>' +
+            '<button type="button" class="pv-nav next" data-pvnav="1" aria-label="Ảnh sau"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>' +
+            '<span class="pv-count">' + pvState.mi + "/" + g.length + "</span>"
+            : "") +
+        "</div>" +
         (g.length > 1 ? '<div class="pv-thumbs">' + thumbs + "</div>" : "") +
       "</div>" +
       '<div class="pv-info">' +
@@ -402,6 +409,15 @@
     }
     var gi = t.closest("[data-gi]");
     if (gi) { pvState.mi = +gi.getAttribute("data-gi"); renderView(); return; }
+    var nav = t.closest("[data-pvnav]");
+    if (nav) {
+      var pn = byId[pvState.id]; var tot = pn.g || 1;
+      pvState.mi = ((pvState.mi - 1 + (+nav.getAttribute("data-pvnav"))) % tot + tot) % tot + 1;
+      renderView();
+      var act = document.querySelector(".pv-thumb.active");
+      if (act && act.scrollIntoView) act.scrollIntoView({ block: "nearest", inline: "center" });
+      return;
+    }
     var q = t.closest("[data-q]");
     if (q) { pvState.qty = Math.max(1, pvState.qty + +q.getAttribute("data-q")); renderView(); return; }
     if (t.closest("[data-pvadd]")) { addToCart(pvState.id, pvState.v, pvState.qty); closeAll(); view = "cart"; renderCart(); openOverlay(".cart-drawer"); return; }
