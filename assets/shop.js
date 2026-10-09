@@ -59,9 +59,18 @@
   }
 
   /* ---------- Product card ---------- */
+  function repVariant(p) {
+    if (p.variants) return p.variants.reduce(function (a, b) { return b.price < a.price ? b : a; });
+    return { price: p.price || 0, orig: p.orig || 0 };
+  }
+  function discountPct(p) {
+    var r = repVariant(p);
+    if (!r.orig || r.orig <= r.price) return 0;
+    return Math.round((r.orig - r.price) / r.orig * 100);
+  }
   function cardHTML(p) {
-    var badge = p.badge ? '<span class="product-badge">' + esc(p.badge) + "</span>" : "";
-    var priceBlock, cta;
+    var tagBadge = p.badge ? '<span class="product-badge tag-badge">' + esc(p.badge) + "</span>" : "";
+    var priceBlock, cta, badge = tagBadge;
     if (p.contactOnly) {
       priceBlock = '<div class="product-price"><span class="pp-contact">Liên hệ báo giá</span></div>';
       cta =
@@ -70,7 +79,9 @@
     } else {
       var mp = minPrice(p);
       var hasVar = !!p.variants;
-      var orig = hasVar ? 0 : p.orig;
+      var orig = repVariant(p).orig;
+      var pct = discountPct(p);
+      if (pct) badge = '<span class="product-badge sale">-' + pct + "%</span>" + tagBadge;
       priceBlock =
         '<div class="product-price">' +
         (hasVar ? '<span class="pp-from">từ</span> ' : "") +
