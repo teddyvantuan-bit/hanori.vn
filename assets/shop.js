@@ -115,12 +115,11 @@
   function renderGrids() {
     var grid = document.querySelector("[data-shop-grid]");
     if (grid) grid.innerHTML = PRODUCTS.map(cardHTML).join("");
-    var feat = document.querySelector("[data-shop-featured]");
-    if (feat) {
+    document.querySelectorAll("[data-shop-featured]").forEach(function (feat) {
       var ids = (feat.getAttribute("data-shop-featured") || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
       var list = ids.length ? ids.map(function (id) { return byId[id]; }).filter(Boolean) : PRODUCTS.slice(0, 6);
       feat.innerHTML = list.map(cardHTML).join("");
-    }
+    });
   }
 
   /* ---------- Overlay / drawer / modal shells ---------- */

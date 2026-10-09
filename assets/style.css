@@ -1206,3 +1206,21 @@ h1, h2, .word-reveal { font-weight: 800; }
   .product-name { font-size: 12.5px; }
   .product-cta .btn { font-size: 11.5px; padding: 8px; }
 }
+
+/* ============================================================
+   Flash band — 🔥 Giảm sốc hôm nay
+   ============================================================ */
+.flash-band { background: linear-gradient(180deg, #FFF4EF 0%, var(--bg) 70%); }
+.flash-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+.flash-title { display: flex; align-items: center; gap: 13px; }
+.flash-title .fire { font-size: 30px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(193,105,74,.3)); }
+.flash-title h2 { font-size: 28px; letter-spacing: -0.03em; }
+.flash-title .fsub { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--accent); font-weight: 600; margin-top: 3px; }
+.flash-title .fsub .pill { background: var(--accent); color: #fff; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; letter-spacing: .02em; }
+.flash-see { font-weight: 700; font-size: 13.5px; color: var(--accent); display: inline-flex; align-items: center; gap: 6px; }
+.flash-see svg { width: 14px; height: 14px; }
+@media (max-width: 640px){
+  .flash-title h2 { font-size: 21px; }
+  .flash-title .fire { font-size: 24px; }
+  .flash-head { margin-bottom: 18px; }
+}
