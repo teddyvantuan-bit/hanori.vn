@@ -470,28 +470,17 @@
           "</div>" +
         "</div>" +
       "</div>" +
-      '<div class="cskh-teaser" data-cskh-open>Cần tư vấn? Nhắn Hanori nhé 💬</div>' +
-      '<button type="button" class="cskh-launch" data-cskh-toggle aria-label="Mở hỗ trợ">' + ICON_CHAT + '<span class="cskh-badge">1</span></button>';
+      '<button type="button" class="cskh-launch" data-cskh-toggle aria-label="Hỗ trợ">' + ICON_CHAT + "</button>";
     document.body.appendChild(w);
     var open = false;
-    function set(o) {
-      open = o; w.classList.toggle("open", o);
-      var tz = w.querySelector(".cskh-teaser"); if (tz) tz.classList.remove("show");
-    }
+    function set(o) { open = o; w.classList.toggle("open", o); }
     w.addEventListener("click", function (e) {
-      if (e.target.closest("[data-cskh-toggle]")) { set(!open); w.querySelector(".cskh-badge").style.display = "none"; }
-      else if (e.target.closest("[data-cskh-open]")) { set(true); w.querySelector(".cskh-badge").style.display = "none"; }
-      else if (e.target.closest("[data-cskh-close]")) { set(false); }
+      if (e.target.closest("[data-cskh-toggle]")) set(!open);
+      else if (e.target.closest("[data-cskh-close]")) set(false);
     });
-    // teaser xuất hiện 1 lần mỗi phiên
-    try {
-      if (!sessionStorage.getItem("hnr_cskh_seen")) {
-        setTimeout(function () {
-          if (!open) { var tz = w.querySelector(".cskh-teaser"); if (tz) tz.classList.add("show"); }
-          sessionStorage.setItem("hnr_cskh_seen", "1");
-        }, 3500);
-      }
-    } catch (e) {}
+    document.addEventListener("click", function (e) {
+      if (open && !e.target.closest(".cskh")) set(false);
+    });
   }
 
   /* ---------- Init ---------- */
