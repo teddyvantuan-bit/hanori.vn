@@ -992,3 +992,61 @@ h1, h2, h3 { color: var(--brown-dark); font-weight: 700; letter-spacing: -0.02em
 .page-hero { padding: 64px 0 36px; }
 .page-hero h1 { font-size: 40px; letter-spacing: -0.03em; }
 h1, h2, .word-reveal { font-weight: 800; }
+
+/* ===== Quick-view gallery ===== */
+.pv-gallery { display: flex; flex-direction: column; background: #F4F5F7; min-height: 0; }
+.pv-gallery .pv-media { flex: 1; min-height: 0; }
+.pv-gallery .pv-media img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1/1; }
+.pv-thumbs { display: flex; gap: 8px; padding: 10px; overflow-x: auto; background: #fff; border-top: 1px solid var(--hairline); scrollbar-width: thin; }
+.pv-thumb { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; background: #F4F5F7; padding: 0; }
+.pv-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.pv-thumb.active { border-color: var(--accent); }
+@media (max-width: 620px) {
+  .pv-gallery { max-height: 54vh; }
+  .pv-thumb { width: 48px; height: 48px; }
+}
+
+/* ============================================================
+   CSKH chat widget (góc dưới phải)
+   ============================================================ */
+.contact-fab { display: none !important; }      /* ẩn widget + cũ */
+.back-to-top { left: 24px; right: auto; }         /* dời sang trái, tránh đè CSKH */
+
+.cskh { position: fixed; right: 22px; bottom: 22px; z-index: 970; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.cskh-launch { position: relative; width: 58px; height: 58px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 26px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 26px rgba(193,105,74,.4); }
+.cskh-launch::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--accent); animation: cskhPulse 2.4s ease-out infinite; }
+@keyframes cskhPulse { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(1.5); opacity: 0; } }
+.cskh-badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: #fff; color: var(--accent); font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); }
+.cskh-teaser { display: none; background: #fff; color: var(--ink); font-size: 13px; font-weight: 500; padding: 10px 14px; border-radius: 14px 14px 2px 14px; box-shadow: var(--shadow-md); max-width: 220px; cursor: pointer; border: 1px solid var(--hairline); }
+.cskh-teaser.show { display: block; animation: cskhIn .3s ease; }
+@keyframes cskhIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.cskh-panel { width: 320px; max-width: calc(100vw - 44px); background: #fff; border-radius: 20px; box-shadow: var(--shadow-lg); border: 1px solid var(--hairline); overflow: hidden; transform-origin: bottom right; opacity: 0; transform: translateY(12px) scale(.95); pointer-events: none; transition: opacity .22s ease, transform .22s ease; position: absolute; bottom: 70px; right: 0; }
+.cskh.open .cskh-panel { opacity: 1; transform: none; pointer-events: auto; }
+.cskh.open .cskh-launch { box-shadow: 0 6px 16px rgba(193,105,74,.3); }
+.cskh.open .cskh-launch::before { display: none; }
+.cskh-head { display: flex; align-items: center; gap: 10px; padding: 16px; background: linear-gradient(135deg, #C1694A, #A9543A); color: #fff; }
+.cskh-ava { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.22); display: flex; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 800; font-size: 19px; }
+.cskh-id { flex: 1; line-height: 1.3; }
+.cskh-id strong { font-size: 14.5px; font-weight: 700; display: block; }
+.cskh-id span { font-size: 11.5px; opacity: .92; display: flex; align-items: center; gap: 5px; }
+.cskh-id .dot { width: 7px; height: 7px; border-radius: 50%; background: #5BE584; display: inline-block; box-shadow: 0 0 0 2px rgba(91,229,132,.3); }
+.cskh-x { color: #fff; font-size: 16px; opacity: .9; }
+.cskh-body { padding: 16px; }
+.cskh-msg { background: var(--panel); border-radius: 4px 14px 14px 14px; padding: 12px 14px; font-size: 13.5px; color: var(--ink); margin-bottom: 14px; }
+.cskh-actions { display: flex; flex-direction: column; gap: 8px; }
+.cskh-btn { display: flex; align-items: center; justify-content: center; padding: 11px; border-radius: 12px; font-size: 13.5px; font-weight: 600; color: #fff; }
+.cskh-btn.zalo { background: #0068FF; }
+.cskh-btn.mess { background: #0084FF; }
+.cskh-btn.call { background: var(--accent); }
+.cskh-btn:hover { filter: brightness(1.06); }
+@media (max-width: 480px) { .cskh { right: 16px; bottom: 16px; } }
+
+/* ===== Logo wordmark ===== */
+.hnr-logo { display: inline-flex; align-items: center; gap: 9px; }
+.hnr-logo-mark { color: var(--accent); width: 30px; height: 30px; display: flex; flex-shrink: 0; }
+.hnr-logo-mark svg { width: 100%; height: 100%; }
+.hnr-logo-word { font-family: 'Be Vietnam Pro', sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.03em; color: var(--brown-dark); line-height: 1; }
+.hnr-logo-word .dot { color: var(--accent); }
+.site-footer .hnr-logo-word { color: #fff; }
+.brand .hnr-logo-mark { width: 28px; height: 28px; }

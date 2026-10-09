@@ -144,10 +144,15 @@
   }
 
   /* ---------- Quick view ---------- */
-  var pvState = { id: null, v: 0, qty: 1 };
+  var pvState = { id: null, v: 0, qty: 1, mi: 1 };
+  function gallery(p) {
+    var n = p.g || 1, a = [];
+    for (var i = 1; i <= n; i++) a.push("/assets/products/" + p.id + "/" + (i < 10 ? "0" + i : i) + ".webp");
+    return a;
+  }
   function openView(id) {
     var p = byId[id]; if (!p) return;
-    pvState = { id: id, v: 0, qty: 1 };
+    pvState = { id: id, v: 0, qty: 1, mi: 1 };
     renderView();
     openOverlay(".pv-modal");
   }
@@ -179,9 +184,18 @@
         '<button type="button" class="btn btn-primary btn-block" data-pvadd>' + ICON_CART + " Thêm vào giỏ</button>" +
         '<a href="' + CFG.shopee + '" target="_blank" rel="noopener" class="btn btn-outline btn-block btn-shopee">' + ICON_SHOPEE + " Mua trên Shopee</a>";
     }
+    var g = gallery(p);
+    if (pvState.mi > g.length) pvState.mi = 1;
+    var mainSrc = g[pvState.mi - 1] || p.img;
+    var thumbs = g.map(function (src, i) {
+      return '<button type="button" class="pv-thumb' + (i + 1 === pvState.mi ? " active" : "") + '" data-gi="' + (i + 1) + '"><img src="' + src + '" alt="" loading="lazy"></button>';
+    }).join("");
     inner.innerHTML =
       '<button type="button" class="pv-close" data-close aria-label="Đóng">' + ICON_X + "</button>" +
-      '<div class="pv-media"><img src="' + p.img + '" alt="' + esc(p.name) + '"></div>' +
+      '<div class="pv-gallery">' +
+        '<div class="pv-media"><img src="' + mainSrc + '" alt="' + esc(p.name) + '"></div>' +
+        (g.length > 1 ? '<div class="pv-thumbs">' + thumbs + "</div>" : "") +
+      "</div>" +
       '<div class="pv-info">' +
         '<span class="product-tag">' + esc(p.tag) + "</span>" +
         "<h3>" + esc(p.name) + "</h3>" +
@@ -380,7 +394,14 @@
 
     // quick view interactions
     var chip = t.closest(".pv-chip");
-    if (chip) { pvState.v = +chip.getAttribute("data-v"); renderView(); return; }
+    if (chip) {
+      pvState.v = +chip.getAttribute("data-v");
+      var pp = byId[pvState.id]; var vv = pp.variants && pp.variants[pvState.v];
+      if (vv && vv.vimg) pvState.mi = vv.vimg;
+      renderView(); return;
+    }
+    var gi = t.closest("[data-gi]");
+    if (gi) { pvState.mi = +gi.getAttribute("data-gi"); renderView(); return; }
     var q = t.closest("[data-q]");
     if (q) { pvState.qty = Math.max(1, pvState.qty + +q.getAttribute("data-q")); renderView(); return; }
     if (t.closest("[data-pvadd]")) { addToCart(pvState.id, pvState.v, pvState.qty); closeAll(); view = "cart"; renderCart(); openOverlay(".cart-drawer"); return; }
@@ -412,10 +433,56 @@
     submitOrder(form);
   }
 
+  /* ---------- CSKH chat widget ---------- */
+  var ICON_CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+  function mountCSKH() {
+    var w = document.createElement("div");
+    w.className = "cskh";
+    w.innerHTML =
+      '<div class="cskh-panel" role="dialog" aria-label="Hỗ trợ khách hàng">' +
+        '<div class="cskh-head">' +
+          '<div class="cskh-ava">H</div>' +
+          '<div class="cskh-id"><strong>Hanori · CSKH</strong><span><i class="dot"></i>Thường trả lời ngay</span></div>' +
+          '<button type="button" class="cskh-x" data-cskh-close aria-label="Đóng">' + ICON_X + "</button>" +
+        "</div>" +
+        '<div class="cskh-body">' +
+          '<div class="cskh-msg">Chào bạn 👋 Hanori có thể giúp gì cho bạn? Nhắn cho tụi mình qua kênh tiện nhất nhé!</div>' +
+          '<div class="cskh-actions">' +
+            '<a href="' + CFG.zalo + '" target="_blank" rel="noopener" class="cskh-btn zalo">Chat Zalo</a>' +
+            '<a href="' + CFG.messenger + '" target="_blank" rel="noopener" class="cskh-btn mess">Nhắn Messenger</a>' +
+            '<a href="tel:' + CFG.phone + '" class="cskh-btn call">Gọi ' + CFG.phoneDisplay + "</a>" +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+      '<div class="cskh-teaser" data-cskh-open>Cần tư vấn? Nhắn Hanori nhé 💬</div>' +
+      '<button type="button" class="cskh-launch" data-cskh-toggle aria-label="Mở hỗ trợ">' + ICON_CHAT + '<span class="cskh-badge">1</span></button>';
+    document.body.appendChild(w);
+    var open = false;
+    function set(o) {
+      open = o; w.classList.toggle("open", o);
+      var tz = w.querySelector(".cskh-teaser"); if (tz) tz.classList.remove("show");
+    }
+    w.addEventListener("click", function (e) {
+      if (e.target.closest("[data-cskh-toggle]")) { set(!open); w.querySelector(".cskh-badge").style.display = "none"; }
+      else if (e.target.closest("[data-cskh-open]")) { set(true); w.querySelector(".cskh-badge").style.display = "none"; }
+      else if (e.target.closest("[data-cskh-close]")) { set(false); }
+    });
+    // teaser xuất hiện 1 lần mỗi phiên
+    try {
+      if (!sessionStorage.getItem("hnr_cskh_seen")) {
+        setTimeout(function () {
+          if (!open) { var tz = w.querySelector(".cskh-teaser"); if (tz) tz.classList.add("show"); }
+          sessionStorage.setItem("hnr_cskh_seen", "1");
+        }, 3500);
+      }
+    } catch (e) {}
+  }
+
   /* ---------- Init ---------- */
   renderGrids();
   buildShell();
   mountCartButton();
+  mountCSKH();
   renderCart();
   document.addEventListener("click", onClick);
   document.addEventListener("submit", onSubmit);
