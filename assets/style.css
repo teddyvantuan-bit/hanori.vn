@@ -1057,3 +1057,15 @@ h1, h2, .word-reveal { font-weight: 800; }
 .pv-gallery { overflow: hidden; }
 .pv-gallery .pv-media img { max-width: 100%; }
 @media (max-width: 620px){ .pv-inner { grid-template-columns: 1fr; } }
+
+/* Hiển thị ảnh quick-view đúng tỉ lệ gốc (ảnh vuông 1:1), KHÔNG kéo giãn / cắt */
+.pv-inner { align-items: start; }
+.pv-gallery { overflow: visible; align-self: start; }
+.pv-gallery .pv-media { flex: none; }
+.pv-gallery .pv-media img { width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; }
+.pv-info { max-height: 90vh; }
+@media (max-width: 620px){
+  .pv-gallery { max-height: none; }
+  .pv-inner { max-height: 92vh; overflow-y: auto; }
+  .pv-info { max-height: none; }
+}
