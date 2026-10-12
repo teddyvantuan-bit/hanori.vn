@@ -1,0 +1,68 @@
+/* ============================================================
+   Hanori — trang chi tiết sản phẩm (PDP)
+   ============================================================ */
+.pdp { padding-top: 24px; }
+.pdp-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: #8a7d74; margin-bottom: 20px; }
+.pdp-crumb a { color: #8a7d74; text-decoration: none; }
+.pdp-crumb a:hover { color: #C1694A; }
+.pdp-crumb .current { color: #4a403a; font-weight: 600; }
+
+.pdp-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 860px) { .pdp-grid { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Gallery */
+.pdp-gallery { position: sticky; top: 90px; }
+@media (max-width: 860px) { .pdp-gallery { position: static; } }
+.pdp-main { background: #f6f1ec; border-radius: 18px; overflow: hidden; aspect-ratio: 1 / 1; }
+.pdp-main img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pdp-thumbs { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.pdp-thumb { width: 64px; height: 64px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; padding: 0; cursor: pointer; background: #f6f1ec; }
+.pdp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pdp-thumb.active { border-color: #C1694A; }
+
+/* Info */
+.pdp-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.pdp-info h1 { font-size: 28px; line-height: 1.25; margin: 0 0 12px; color: #352c26; }
+@media (max-width: 480px) { .pdp-info h1 { font-size: 23px; } }
+.pdp-note { display: inline-block; font-size: 13px; color: #C1694A; background: #fbeee7; padding: 4px 10px; border-radius: 8px; margin: 0 0 12px; }
+.pdp-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.pdp-price .pp-from { font-size: 14px; color: #8a7d74; }
+.pdp-price .pp-now { font-size: 28px; font-weight: 800; color: #C1694A; }
+.pdp-price .pp-old { font-size: 16px; color: #b3a79e; text-decoration: line-through; }
+.pdp-price .pp-off { font-size: 13px; font-weight: 700; color: #fff; background: #C1694A; padding: 2px 8px; border-radius: 6px; }
+.pdp-desc { color: #5c524b; line-height: 1.6; margin-bottom: 18px; }
+
+.pdp-specs { list-style: none; padding: 0; margin: 0 0 18px; border: 1px solid #ece3db; border-radius: 12px; overflow: hidden; }
+.pdp-specs li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 14px; font-size: 14px; }
+.pdp-specs li:nth-child(odd) { background: #faf6f2; }
+.pdp-specs li span { color: #8a7d74; }
+.pdp-specs li strong { color: #4a403a; text-align: right; }
+
+.pdp-variants { margin-bottom: 18px; }
+.pdp-vlabel { display: block; font-size: 13px; color: #8a7d74; margin-bottom: 8px; font-weight: 600; }
+.pdp-variants ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.pdp-variants li { display: flex; align-items: baseline; gap: 10px; font-size: 14px; color: #4a403a; }
+.pdp-variants li strong { color: #C1694A; }
+.pdp-variants li .pp-old { font-size: 12px; color: #b3a79e; text-decoration: line-through; }
+
+.pdp-cta { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.pdp-trust { list-style: none; padding: 14px 0 0; margin: 0; border-top: 1px solid #ece3db; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13.5px; color: #5c524b; }
+
+/* Detail + related */
+.pdp-detail { margin-top: 48px; max-width: 760px; }
+.pdp-detail h2 { font-size: 20px; color: #352c26; margin: 28px 0 12px; }
+.pdp-detail p { color: #5c524b; line-height: 1.7; margin: 0 0 12px; }
+.pdp-spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.pdp-spec-table th, .pdp-spec-table td { text-align: left; padding: 10px 14px; border: 1px solid #ece3db; }
+.pdp-spec-table th { background: #faf6f2; color: #4a403a; width: 42%; font-weight: 600; }
+.pdp-spec-table td { color: #5c524b; }
+
+.pdp-related { margin-top: 48px; }
+.pdp-related h2 { font-size: 20px; color: #352c26; margin: 0 0 16px; }
+.pdp-related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 760px) { .pdp-related-grid { grid-template-columns: repeat(2, 1fr); } }
+.pdp-related-card { display: flex; flex-direction: column; text-decoration: none; background: #fff; border: 1px solid #ece3db; border-radius: 14px; overflow: hidden; transition: box-shadow .2s, transform .2s; }
+.pdp-related-card:hover { box-shadow: 0 10px 24px rgba(120, 90, 70, .12); transform: translateY(-2px); }
+.pdp-related-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: #f6f1ec; }
+.pr-name { font-size: 13.5px; color: #4a403a; padding: 10px 12px 2px; line-height: 1.35; }
+.pr-price { font-size: 14px; font-weight: 700; color: #C1694A; padding: 0 12px 12px; }

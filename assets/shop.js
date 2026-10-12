@@ -95,13 +95,13 @@
     var note = p.note ? '<span class="product-note">' + esc(p.note) + "</span>" : "";
     return (
       '<div class="product-card" data-category="' + p.cat + '">' +
-        '<div class="product-thumb" data-view="' + p.id + '">' +
+        '<a class="product-thumb" href="/san-pham/' + p.id + '/" aria-label="' + esc(p.name) + '">' +
           '<img src="' + p.img + '" alt="' + esc(p.name) + '" loading="lazy">' +
           '<span class="product-quickview">Xem chi tiết</span>' +
-        "</div>" +
+        "</a>" +
         '<div class="product-body">' +
           '<div class="product-meta"><span class="product-tag">' + esc(p.tag) + "</span>" + tagChip + "</div>" +
-          '<h3 class="product-name" data-view="' + p.id + '">' + esc(p.name) + "</h3>" +
+          '<h3 class="product-name"><a href="/san-pham/' + p.id + '/">' + esc(p.name) + "</a></h3>" +
           note +
           '<p class="product-desc">' + esc(p.desc) + "</p>" +
           priceBlock +
