@@ -1,0 +1,35 @@
+/* ============================================================
+   Hanori — mục Tin tức / blog
+   ============================================================ */
+.blog-wrap { padding-top: 24px; }
+.blog-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: #8a7d74; margin-bottom: 20px; }
+.blog-crumb a { color: #8a7d74; text-decoration: none; }
+.blog-crumb a:hover { color: #C1694A; }
+.blog-crumb .current { color: #4a403a; font-weight: 600; }
+
+/* Listing */
+.blog-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+@media (max-width: 760px) { .blog-list { grid-template-columns: 1fr; } }
+.blog-card { display: flex; flex-direction: column; background: #fff; border: 1px solid #ece3db; border-radius: 16px; padding: 22px 24px; text-decoration: none; transition: box-shadow .2s, transform .2s; }
+.blog-card:hover { box-shadow: 0 12px 28px rgba(120, 90, 70, .12); transform: translateY(-2px); }
+.blog-card .bc-tag { font-size: 12.5px; color: #C1694A; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+.blog-card h2 { font-size: 19px; line-height: 1.35; color: #352c26; margin: 0 0 10px; }
+.blog-card p { font-size: 14.5px; color: #5c524b; line-height: 1.6; margin: 0 0 14px; }
+.blog-card .bc-more { font-size: 14px; color: #C1694A; font-weight: 600; margin-top: auto; }
+
+/* Article */
+.article { max-width: 760px; margin: 0 auto; }
+.article h1 { font-size: 30px; line-height: 1.25; color: #352c26; margin: 0 0 10px; }
+@media (max-width: 480px) { .article h1 { font-size: 24px; } }
+.article .art-meta { font-size: 13.5px; color: #8a7d74; margin-bottom: 24px; }
+.article h2 { font-size: 21px; color: #352c26; margin: 30px 0 12px; }
+.article p { color: #4a403a; line-height: 1.75; margin: 0 0 16px; font-size: 16px; }
+.article ul { margin: 0 0 16px; padding-left: 22px; color: #4a403a; line-height: 1.75; }
+.article ul li { margin-bottom: 6px; }
+.article a { color: #C1694A; text-decoration: underline; text-underline-offset: 2px; }
+.article a:hover { color: #9E4D35; }
+.article .art-cta { margin-top: 32px; padding: 22px 24px; background: #faf6f2; border: 1px solid #ece3db; border-radius: 14px; }
+.article .art-cta p { margin: 0 0 12px; }
+
+.blog-back { display: inline-block; margin-top: 36px; font-size: 14px; color: #8a7d74; text-decoration: none; }
+.blog-back:hover { color: #C1694A; }

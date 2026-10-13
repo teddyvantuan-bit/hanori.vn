@@ -366,3 +366,36 @@
   }
 
 })();
+
+/* ===== Thêm mục "Tin tức" vào menu & footer (áp dụng mọi trang) ===== */
+(function () {
+  "use strict";
+  function insertAfter(ref, el) {
+    if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref.nextSibling);
+  }
+  function newsLink() {
+    var a = document.createElement("a");
+    a.href = "/tin-tuc/";
+    a.textContent = "Tin tức";
+    return a;
+  }
+  function addToNav(nav) {
+    if (!nav || nav.querySelector('a[href="/tin-tuc/"]')) return;
+    var after = nav.querySelector('a[href="/lien-he/"]') || nav.querySelector('a[href="/san-pham/"]');
+    insertAfter(after, newsLink());
+  }
+  function run() {
+    addToNav(document.querySelector(".main-nav"));
+    addToNav(document.querySelector(".mobile-nav"));
+    document.querySelectorAll(".footer-col-links").forEach(function (c) {
+      if (c.querySelector('a[href="/san-pham/"]') && !c.querySelector('a[href="/tin-tuc/"]')) {
+        insertAfter(c.querySelector('a[href="/lien-he/"]') || c.querySelector('a[href="/san-pham/"]'), newsLink());
+      }
+    });
+    if (location.pathname.indexOf("/tin-tuc") === 0) {
+      document.querySelectorAll('.main-nav a[href="/tin-tuc/"], .mobile-nav a[href="/tin-tuc/"]').forEach(function (a) { a.classList.add("active"); });
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
+  else run();
+})();
