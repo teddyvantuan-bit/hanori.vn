@@ -17,9 +17,11 @@ HANORI.config = {
   messenger: "https://m.me/hanorivietnam",
   phone: "0962818892",
   phoneDisplay: "0962 818 892",
-  orderWebhook: "",
-  shippingNote: "Phí ship tính theo khu vực, nhân viên xác nhận khi chốt đơn.",
-  freeShipThreshold: 0
+  // Enable only after the server, GHN, payOS and order storage pass live acceptance.
+  commerceEnabled: false,
+  commerceApiBase: "/api",
+  shippingNote: "Miễn phí vận chuyển cho đơn từ 200.000đ. Đơn dưới mức này tính phí theo địa chỉ nhận hàng.",
+  freeShipThreshold: 200000
 };
 
 function _p(id, g) { return "/assets/products/" + id + "/" + g + ".webp"; }
