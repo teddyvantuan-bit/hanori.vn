@@ -1,0 +1,46 @@
+{
+  "title": "Hanori — Quản lý đơn website",
+  "sheet": "Đơn hàng",
+  "rowCount": 10000,
+  "frozenRowCount": 1,
+  "headers": [
+    "Mã đơn",
+    "Ngày tạo",
+    "Họ tên",
+    "Điện thoại",
+    "Địa chỉ chi tiết",
+    "Tiền hàng (VND)",
+    "Phí ship khách trả (VND)",
+    "Tổng thu khách (VND)",
+    "Trạng thái thanh toán hệ thống",
+    "Sản phẩm và phân loại",
+    "Mã link thanh toán",
+    "Ghi chú khách",
+    "Cập nhật lúc",
+    "Cước GHN dự kiến (VND)",
+    "Phường/xã và tỉnh/thành",
+    "Phương thức thanh toán",
+    "Trạng thái xử lý",
+    "Mã vận đơn",
+    "COD đã thu (VND)",
+    "Ghi chú nội bộ"
+  ],
+  "systemColumns": "A:P",
+  "manualColumns": "Q:T",
+  "statusOptions": [
+    "Chờ xác nhận",
+    "Đang chuẩn bị",
+    "Đã gửi hàng",
+    "Hoàn thành",
+    "Đã hủy",
+    "Hoàn hàng"
+  ],
+  "notes": [
+    "Bảng live đã có tab Đơn hàng và Hướng dẫn, đủ 10.000 dòng; chưa kết nối website.",
+    "Không đặt công thức trong A:P. Máy chủ cập nhật các cột này theo mã đơn, dùng RAW để không chạy công thức từ nội dung khách nhập.",
+    "Q:T dành cho đội vận hành. Máy chủ không ghi đè các cột này.",
+    "Đơn COD mới có trạng thái COD — chờ thu tiền. Chỉ ghi COD đã thu ở cột S sau khi đối chiếu chứng từ thu hộ.",
+    "Doanh thu COD thực nhận phải đối chiếu thêm tiền GHN chuyển về và các phí, hoàn hàng.",
+    "Không sắp xếp, chèn hay xóa dòng A:P trong lúc bộ đồng bộ đang chạy; dùng chế độ xem bộ lọc. Dừng bộ đồng bộ trước khi chỉnh cấu trúc."
+  ]
+}

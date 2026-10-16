@@ -17,16 +17,18 @@ HANORI.config = {
   messenger: "https://m.me/hanorivietnam",
   phone: "0962818892",
   phoneDisplay: "0962 818 892",
-  orderWebhook: "",
-  shippingNote: "Phí ship tính theo khu vực, nhân viên xác nhận khi chốt đơn.",
-  freeShipThreshold: 0
+  // Enable only after the server, GHN, payOS and order storage pass live acceptance.
+  commerceEnabled: false,
+  commerceApiBase: "/api",
+  shippingNote: "Miễn phí vận chuyển cho đơn từ 200.000đ. Đơn dưới mức này tính phí theo địa chỉ nhận hàng.",
+  freeShipThreshold: 200000
 };
 
 function _p(id, g) { return "/assets/products/" + id + "/" + g + ".webp"; }
 
 HANORI.products = [
   {
-    id: "thung-gao-dong-ho", cat: "bep", badge: "Bán chạy", g: 13,
+    id: "thung-gao-dong-ho", cover: "/assets/products/thung-gao-dong-ho/11.webp", cat: "bep", badge: "Bán chạy", g: 13,
     img: _p("thung-gao-dong-ho", "01"),
     name: "Thùng đựng gạo có đồng hồ (nắp ghi ngày)",
     tag: "Lưu trữ nhà bếp",
@@ -38,7 +40,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "thung-gao-ep", cat: "bep", badge: "Bán chạy", g: 24,
+    id: "thung-gao-ep", cover: "/assets/cat-bep.webp", cat: "bep", badge: "Bán chạy", g: 24,
     img: _p("thung-gao-ep", "01"),
     name: "Thùng gạo ép thông minh (5kg / 10kg)",
     tag: "Lưu trữ nhà bếp",
@@ -52,7 +54,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "binh-nuoc-4l", cat: "bep", badge: "Mới", g: 10,
+    id: "binh-nuoc-4l", cover: "/assets/products/binh-nuoc-4l/07.webp", cat: "bep", badge: "Mới", g: 10,
     img: _p("binh-nuoc-4l", "01"),
     name: "Bình nước tủ lạnh có vòi 4L",
     tag: "Nhà bếp",
@@ -61,7 +63,7 @@ HANORI.products = [
     price: 195000, orig: 245000, sku: "DA1311-1"
   },
   {
-    id: "ke-gia-vi", cat: "bep", badge: "Combo", g: 10,
+    id: "ke-gia-vi", cover: "/assets/products/ke-gia-vi/02.webp", cat: "bep", badge: "Combo", g: 10,
     img: _p("ke-gia-vi", "01"),
     name: "Kệ gia vị đa năng 3 trong 1",
     tag: "Ngăn nắp nhà bếp",
@@ -70,7 +72,7 @@ HANORI.products = [
     price: 392000, orig: 620000, sku: "A1080"
   },
   {
-    id: "ke-dao-keo", cat: "bep", badge: "", g: 15,
+    id: "ke-dao-keo", cover: "/assets/products/ke-dao-keo/02.webp", cat: "bep", badge: "", g: 15,
     img: _p("ke-dao-keo", "01"),
     name: "Kệ đựng dao, kéo & đũa muỗng",
     tag: "Ngăn nắp nhà bếp",
@@ -84,7 +86,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "thung-rac-dap", cat: "bep", badge: "Bán chạy", g: 15,
+    id: "thung-rac-dap", cover: "/assets/products/thung-rac-dap/06.webp", cat: "bep", badge: "Bán chạy", g: 15,
     img: _p("thung-rac-dap", "01"),
     name: "Thùng rác đạp chân nắp bật",
     tag: "Ngăn nắp nhà bếp",
@@ -97,7 +99,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "thung-rac-treo", cat: "bep", badge: "", g: 17,
+    id: "thung-rac-treo", cover: "/assets/products/thung-rac-treo/11.webp", cat: "bep", badge: "", g: 17,
     img: _p("thung-rac-treo", "01"),
     name: "Thùng rác treo cánh tủ",
     tag: "Ngăn nắp nhà bếp",
@@ -111,7 +113,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "tui-rac", cat: "bep", badge: "", g: 11,
+    id: "tui-rac", cover: "/assets/products/tui-rac/02.webp", cat: "bep", badge: "", g: 11,
     img: _p("tui-rac", "01"),
     name: "Túi rác rút dây họa tiết hoa lá",
     tag: "Tiện ích nhà bếp",
@@ -123,7 +125,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "ke-2-tang", cat: "tam", badge: "Bán chạy", g: 12,
+    id: "ke-2-tang", cover: "/assets/products/ke-2-tang/10.webp", cat: "tam", badge: "Bán chạy", g: 12,
     img: _p("ke-2-tang", "01"),
     name: "Kệ bầu dục treo tường (hút chân không)",
     tag: "Ngăn nắp phòng tắm",
@@ -135,7 +137,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "ke-tam-giac", cat: "tam", badge: "", g: 13,
+    id: "ke-tam-giac", cover: "/assets/cat-tam.webp", cat: "tam", badge: "", g: 13,
     img: _p("ke-tam-giac", "01"),
     name: "Kệ góc tam giác phòng tắm",
     tag: "Ngăn nắp phòng tắm",
@@ -147,7 +149,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "moc-hut-chan-khong", cat: "tam", badge: "", g: 17,
+    id: "moc-hut-chan-khong", cover: "/assets/products/moc-hut-chan-khong/02.webp", cat: "tam", badge: "", g: 17,
     img: _p("moc-hut-chan-khong", "01"),
     name: "Móc treo hút chân không (chữ U / Oval)",
     tag: "Ngăn nắp phòng tắm",
@@ -159,7 +161,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "kep-treo-meo", cat: "tam", badge: "", g: 11,
+    id: "kep-treo-meo", cover: "/assets/products/kep-treo-meo/11.webp", cat: "tam", badge: "", g: 11,
     img: _p("kep-treo-meo", "01"),
     name: "Kẹp treo tường hình mèo (gấp gọn)",
     tag: "Tiện ích gia đình",
@@ -168,7 +170,7 @@ HANORI.products = [
     price: 75000, orig: 120000, sku: "DB1511-1"
   },
   {
-    id: "hop-mini-treo-tuong", cat: "tam", badge: "-34%", g: 11,
+    id: "hop-mini-treo-tuong", cover: "/assets/products/hop-mini-treo-tuong/10.webp", cat: "tam", badge: "-34%", g: 11,
     img: _p("hop-mini-treo-tuong", "01"),
     name: "Hộp đựng đồ mini treo tường (hành tỏi / mỹ phẩm)",
     tag: "Ngăn nắp phòng tắm",
@@ -180,7 +182,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "hop-khan-giay", cat: "decor", badge: "Dễ thương", g: 16,
+    id: "hop-khan-giay", cover: "/assets/products/hop-khan-giay/02.webp", cat: "decor", badge: "Dễ thương", g: 16,
     img: _p("hop-khan-giay", "01"),
     name: "Hộp đựng khăn giấy hình phao bơi",
     tag: "Phòng khách",
@@ -194,7 +196,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "hop-giay-bi-ngo", cat: "decor", badge: "Dễ thương", g: 10,
+    id: "hop-giay-bi-ngo", cover: "/assets/products/hop-giay-bi-ngo/07.webp", cat: "decor", badge: "Dễ thương", g: 10,
     img: _p("hop-giay-bi-ngo", "01"),
     name: "Hộp giấy bí ngô mặt cười",
     tag: "Phòng khách",
@@ -203,7 +205,7 @@ HANORI.products = [
     price: 78000, orig: 105000, sku: "D2261-1"
   },
   {
-    id: "hop-giay-moai", cat: "decor", badge: "-38%", g: 12,
+    id: "hop-giay-moai", cover: "/assets/cat-decor.webp", cat: "decor", badge: "-38%", g: 12,
     img: _p("hop-giay-moai", "01"),
     name: "Hộp giấy tượng Moai (đầu tượng) trang trí",
     tag: "Phòng khách",
@@ -216,7 +218,7 @@ HANORI.products = [
     ]
   },
   {
-    id: "tong-do-cat-toc", cat: "decor", badge: "Mới", g: 10,
+    id: "tong-do-cat-toc", cover: "/assets/products/tong-do-cat-toc/09.webp", cat: "decor", badge: "Mới", g: 10,
     img: _p("tong-do-cat-toc", "01"),
     name: "Tông đơ cắt tóc không dây Hanori HN-809A",
     tag: "Thiết bị gia đình",
@@ -225,7 +227,7 @@ HANORI.products = [
     price: 354000, sku: "HN-809A"
   },
   {
-    id: "bo-phu-kien", cat: "decor", badge: "Mua kèm", g: 18,
+    id: "bo-phu-kien", cover: "/assets/products/bo-phu-kien/18.webp", cat: "decor", badge: "Mua kèm", g: 18,
     img: _p("bo-phu-kien", "01"),
     name: "Bộ phụ kiện trang trí (tay, chân, mắt)",
     tag: "Phụ kiện",
