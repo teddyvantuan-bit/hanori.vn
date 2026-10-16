@@ -14,7 +14,7 @@ const store = createStore(env.DB_PATH || './data/hanori.sqlite');
 const packages = JSON.parse(readFileSync(env.PACKAGES_FILE || new URL('./packages.json', import.meta.url), 'utf8'));
 const app = createCommerce({ env: { ...env, PUBLIC_ORIGIN: origin }, store, providers: createProviders({ ...env, PUBLIC_ORIGIN: origin }), sheets: createSheets(env), packages });
 const rate = new Map();
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.json': 'application/json' };
 function json(res, code, body) { res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(body)); }
 const server = http.createServer(async (req, res) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -47,7 +47,7 @@ const server = http.createServer(async (req, res) => {
     const pathname = decodeURIComponent(url.pathname);
     if (pathname.includes('..') || pathname.includes('\\') || pathname.split('/').some(p => p.startsWith('.'))) return json(res, 404, {});
     const relative = pathname.replace(/^\//, '') || 'index.html';
-    const publicPath = relative.startsWith('assets/') || /^(index\.html|robots\.txt|sitemap\.xml|404\.html|google[a-f0-9]+\.html)$/.test(relative) || /^(san-pham|tin-tuc|gioi-thieu|lien-he|dieu-khoan-su-dung|chinh-sach-[a-z-]+)(\/|$)/.test(relative);
+    const publicPath = relative.startsWith('assets/') || /^(index\.html|robots\.txt|sitemap\.xml|manifest\.json|404\.html|google[a-f0-9]+\.html)$/.test(relative) || /^(san-pham|tin-tuc|gioi-thieu|lien-he|dieu-khoan-su-dung|chinh-sach-[a-z-]+)(\/|$)/.test(relative);
     if (!publicPath) return json(res, 404, {});
     let path = resolve(root, relative);
     if ((await stat(path)).isDirectory()) {

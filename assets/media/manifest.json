@@ -1,0 +1,146 @@
+[
+  {
+    "id": "binh-nuoc-4l",
+    "coverSource": "/assets/products/binh-nuoc-4l/07.webp",
+    "galleryCount": 10,
+    "sourceCoverBytes": 58036,
+    "coverBytes": 14848,
+    "atlasBytes": 26296
+  },
+  {
+    "id": "bo-phu-kien",
+    "coverSource": "/assets/products/bo-phu-kien/18.webp",
+    "galleryCount": 18,
+    "sourceCoverBytes": 48114,
+    "coverBytes": 15216,
+    "atlasBytes": 45918
+  },
+  {
+    "id": "hop-giay-bi-ngo",
+    "coverSource": "/assets/products/hop-giay-bi-ngo/07.webp",
+    "galleryCount": 10,
+    "sourceCoverBytes": 31470,
+    "coverBytes": 9538,
+    "atlasBytes": 22500
+  },
+  {
+    "id": "hop-giay-moai",
+    "coverSource": "/assets/cat-decor.webp",
+    "galleryCount": 12,
+    "sourceCoverBytes": 57406,
+    "coverBytes": 14606,
+    "atlasBytes": 27558
+  },
+  {
+    "id": "hop-khan-giay",
+    "coverSource": "/assets/products/hop-khan-giay/02.webp",
+    "galleryCount": 16,
+    "sourceCoverBytes": 48366,
+    "coverBytes": 14136,
+    "atlasBytes": 34166
+  },
+  {
+    "id": "hop-mini-treo-tuong",
+    "coverSource": "/assets/products/hop-mini-treo-tuong/10.webp",
+    "galleryCount": 11,
+    "sourceCoverBytes": 47706,
+    "coverBytes": 12120,
+    "atlasBytes": 31716
+  },
+  {
+    "id": "ke-2-tang",
+    "coverSource": "/assets/products/ke-2-tang/10.webp",
+    "galleryCount": 12,
+    "sourceCoverBytes": 47688,
+    "coverBytes": 13194,
+    "atlasBytes": 25080
+  },
+  {
+    "id": "ke-dao-keo",
+    "coverSource": "/assets/products/ke-dao-keo/02.webp",
+    "galleryCount": 15,
+    "sourceCoverBytes": 52856,
+    "coverBytes": 16630,
+    "atlasBytes": 33092
+  },
+  {
+    "id": "ke-gia-vi",
+    "coverSource": "/assets/products/ke-gia-vi/02.webp",
+    "galleryCount": 10,
+    "sourceCoverBytes": 102180,
+    "coverBytes": 26468,
+    "atlasBytes": 33924
+  },
+  {
+    "id": "ke-tam-giac",
+    "coverSource": "/assets/cat-tam.webp",
+    "galleryCount": 13,
+    "sourceCoverBytes": 62336,
+    "coverBytes": 15190,
+    "atlasBytes": 29106
+  },
+  {
+    "id": "kep-treo-meo",
+    "coverSource": "/assets/products/kep-treo-meo/11.webp",
+    "galleryCount": 11,
+    "sourceCoverBytes": 23380,
+    "coverBytes": 6882,
+    "atlasBytes": 21970
+  },
+  {
+    "id": "moc-hut-chan-khong",
+    "coverSource": "/assets/products/moc-hut-chan-khong/02.webp",
+    "galleryCount": 17,
+    "sourceCoverBytes": 95174,
+    "coverBytes": 21622,
+    "atlasBytes": 36750
+  },
+  {
+    "id": "thung-gao-dong-ho",
+    "coverSource": "/assets/products/thung-gao-dong-ho/11.webp",
+    "galleryCount": 13,
+    "sourceCoverBytes": 110196,
+    "coverBytes": 25510,
+    "atlasBytes": 35470
+  },
+  {
+    "id": "thung-gao-ep",
+    "coverSource": "/assets/cat-bep.webp",
+    "galleryCount": 24,
+    "sourceCoverBytes": 58178,
+    "coverBytes": 14092,
+    "atlasBytes": 53958
+  },
+  {
+    "id": "thung-rac-dap",
+    "coverSource": "/assets/products/thung-rac-dap/06.webp",
+    "galleryCount": 15,
+    "sourceCoverBytes": 52054,
+    "coverBytes": 13168,
+    "atlasBytes": 26646
+  },
+  {
+    "id": "thung-rac-treo",
+    "coverSource": "/assets/products/thung-rac-treo/11.webp",
+    "galleryCount": 17,
+    "sourceCoverBytes": 31712,
+    "coverBytes": 9806,
+    "atlasBytes": 39324
+  },
+  {
+    "id": "tong-do-cat-toc",
+    "coverSource": "/assets/products/tong-do-cat-toc/09.webp",
+    "galleryCount": 10,
+    "sourceCoverBytes": 87348,
+    "coverBytes": 20698,
+    "atlasBytes": 27118
+  },
+  {
+    "id": "tui-rac",
+    "coverSource": "/assets/products/tui-rac/02.webp",
+    "galleryCount": 11,
+    "sourceCoverBytes": 85260,
+    "coverBytes": 20444,
+    "atlasBytes": 31368
+  }
+]

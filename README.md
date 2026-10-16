@@ -30,3 +30,7 @@ Mở `http://localhost:8788/`. Bản này có nhãn kiểm thử, lưu vào bộ
 ## Triển khai
 
 GitHub Pages chỉ chạy phần HTML/JS tĩnh; không thể giữ khóa thanh toán hoặc nhận webhook. Để bật checkout tự động, cần máy chủ Node 24 có ổ đĩa bền vững, HTTPS và tuyến `/api/*` cùng tên miền website. Hướng dẫn chi tiết nằm trong tài liệu kích hoạt. Không đưa `.env`, cơ sở dữ liệu hay khóa Google vào thư mục public hoặc Git.
+
+## Thiết kế mobile và media
+
+Giao diện dùng `assets/storefront.css`, gallery/chọn mẫu tại `assets/pdp.js`, danh mục/giỏ hàng tại `assets/shop.js`. [Thiết kế, kiểm tra và giới hạn](docs/THIET-KE-TRAI-NGHIEM.md). Tạo lại ảnh tối ưu bằng `python3 scripts/build_media.py` (cần Pillow); ảnh gốc không bị thay thế.

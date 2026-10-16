@@ -8,7 +8,7 @@
   if (!H || !H.products) return;
   var CFG = H.config;
   var PRODUCTS = H.products;
-  var byId = {};
+  var byId = Object.create(null);
   PRODUCTS.forEach(function (p) { byId[p.id] = p; });
 
   /* ---------- Helpers ---------- */
@@ -72,7 +72,7 @@
     return Math.round((r.orig - r.price) / r.orig * 100);
   }
   function cardHTML(p) {
-    var tagChip = p.badge ? '<span class="tag-chip">' + esc(p.badge) + "</span>" : "";
+    var tagChip = p.badge && !/%/.test(p.badge) ? '<span class="tag-chip">' + esc(p.badge) + "</span>" : "";
     var priceBlock, cta;
     if (p.contactOnly) {
       priceBlock = '<div class="product-price"><span class="pp-contact">Liên hệ báo giá</span></div>';
@@ -99,7 +99,7 @@
     return (
       '<div class="product-card" data-category="' + p.cat + '">' +
         '<a class="product-thumb" href="/san-pham/' + p.id + '/" aria-label="' + esc(p.name) + '">' +
-          '<img src="' + p.img + '" alt="' + esc(p.name) + '" loading="lazy">' +
+          '<img src="/assets/media/' + p.id + '-400.webp" srcset="/assets/media/' + p.id + '-400.webp 400w, ' + (p.cover || p.img) + ' 960w" sizes="(max-width:640px) calc((100vw - 52px)/2), (max-width:1050px) 30vw, 270px" width="960" height="960" alt="' + esc(p.name) + '" loading="lazy" decoding="async">' +
           '<span class="product-quickview">Xem chi tiết</span>' +
         "</a>" +
         '<div class="product-body">' +
@@ -108,6 +108,7 @@
           note +
           '<p class="product-desc">' + esc(p.desc) + "</p>" +
           priceBlock +
+          (p.variants ? '<span class="product-variants-count">' + p.variants.length + ' phân loại</span>' : '<span class="product-variants-count">Một phiên bản</span>') +
           '<div class="product-cta">' + cta + "</div>" +
         "</div>" +
       "</div>"
@@ -124,6 +125,49 @@
     });
   }
 
+  function mountCatalog() {
+    var grid = document.querySelector('[data-shop-grid]');
+    if (!grid) return;
+    var search = document.querySelector('[data-catalog-search]');
+    var sort = document.querySelector('[data-catalog-sort]');
+    var chips = Array.from(document.querySelectorAll('.chip[data-category]'));
+    var currentCategory = 'all', searchTimer;
+    function fold(value) { return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g,'d'); }
+    function apply(updateUrl, push) {
+      var terms = fold(search.value.trim()).split(/\s+/).filter(Boolean);
+      var list = PRODUCTS.filter(function(p) { var haystack=fold(p.name+' '+p.desc+' '+p.tag+' '+(p.variants || []).map(function(v){return v.name;}).join(' '));return (currentCategory === 'all' || p.cat === currentCategory) && terms.every(function(term){return haystack.includes(term);}); });
+      if (sort.value === 'price-asc') list.sort(function(a,b){return minPrice(a)-minPrice(b);});
+      if (sort.value === 'price-desc') list.sort(function(a,b){return minPrice(b)-minPrice(a);});
+      grid.innerHTML = list.map(cardHTML).join('');
+      document.querySelector('[data-catalog-count]').textContent = list.length + ' sản phẩm';
+      document.querySelector('[data-catalog-empty]').hidden = list.length > 0;
+      document.querySelector('[data-search-clear]').hidden = !search.value;
+      chips.forEach(function(c){var active=c.dataset.category===currentCategory;c.classList.toggle('active',active);c.setAttribute('aria-pressed',String(active));});
+      if (updateUrl) {
+        var url = new URL(location.href);
+        [['category',currentCategory==='all'?'':currentCategory],['q',search.value.trim()],['sort',sort.value==='featured'?'':sort.value]].forEach(function(pair){if(pair[1])url.searchParams.set(pair[0],pair[1]);else url.searchParams.delete(pair[0]);});
+        url.searchParams.delete('focus');
+        history[push?'pushState':'replaceState'](null,'',url.pathname+url.search);
+      }
+    }
+    function readUrl() {
+      var params = new URLSearchParams(location.search), cat=params.get('category');
+      currentCategory=['bep','tam','decor'].includes(cat)?cat:'all';
+      search.value=(params.get('q') || '').slice(0,100);
+      sort.value=['price-asc','price-desc'].includes(params.get('sort'))?params.get('sort'):'featured';
+      apply(false);
+    }
+    search.maxLength=100;
+    search.addEventListener('input',function(){clearTimeout(searchTimer);searchTimer=setTimeout(function(){apply(true,false);},160);});
+    chips.forEach(function(chip){chip.addEventListener('click',function(){clearTimeout(searchTimer);currentCategory=chip.dataset.category;apply(true,true);});});
+    sort.addEventListener('change',function(){apply(true,true);});
+    document.querySelector('[data-search-clear]').addEventListener('click',function(){search.value='';apply(true,false);search.focus();});
+    document.querySelector('[data-catalog-reset]').addEventListener('click',function(){search.value='';currentCategory='all';sort.value='featured';apply(true,true);search.focus();});
+    window.addEventListener('popstate',readUrl);
+    readUrl();
+    if(new URLSearchParams(location.search).get('focus')==='search')search.focus();
+  }
+
   /* ---------- Overlay / drawer / modal shells ---------- */
   function buildShell() {
     var el = document.createElement("div");
@@ -131,17 +175,30 @@
       '<div class="shop-overlay" data-close></div>' +
       '<aside class="cart-drawer" aria-label="Giỏ hàng"><div class="cart-inner"></div></aside>' +
       '<div class="pv-modal" aria-label="Chi tiết sản phẩm"><div class="pv-inner"></div></div>';
+    el.className = 'shop-shell';
     document.body.appendChild(el);
+    el.querySelectorAll('.cart-drawer,.pv-modal').forEach(function(panel){panel.hidden=true;panel.inert=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.tabIndex=-1;});
   }
 
+  var overlayFocus = null, inertElements = [];
   function openOverlay(what) {
+    document.dispatchEvent(new CustomEvent('hanori:overlay'));
+    if (!document.body.classList.contains('shop-lock')) {
+      overlayFocus = document.activeElement;
+      inertElements = Array.from(document.body.children).filter(function(el){return !el.classList.contains('shop-shell') && el.tagName !== 'SCRIPT' && el.tagName !== 'DIALOG';}).map(function(el){var entry={el:el,inert:el.inert};el.inert=true;return entry;});
+    }
     document.querySelector(".shop-overlay").classList.add("open");
     document.body.classList.add("shop-lock");
-    if (what) document.querySelector(what).classList.add("open");
+    document.querySelectorAll('.cart-drawer,.pv-modal').forEach(function(panel){var active=panel.matches(what);panel.hidden=!active;panel.inert=!active;panel.classList.toggle('open',active);if(active){var target=panel.querySelector('button,a,input,select');(target || panel).focus();}});
   }
   function closeAll() {
+    rememberCheckout();
     document.querySelectorAll(".shop-overlay,.cart-drawer,.pv-modal").forEach(function (e) { e.classList.remove("open"); });
+    document.querySelectorAll('.cart-drawer,.pv-modal').forEach(function(panel){panel.hidden=true;panel.inert=true;});
     document.body.classList.remove("shop-lock");
+    inertElements.forEach(function(entry){entry.el.inert=entry.inert;});inertElements=[];
+    if(overlayFocus && overlayFocus.isConnected)overlayFocus.focus();
+    overlayFocus=null;
   }
 
   /* ---------- Quick view ---------- */
@@ -165,7 +222,7 @@
       variantsUI =
         '<div class="pv-variants"><span class="pv-label">Phân loại</span><div class="pv-chips">' +
         p.variants.map(function (vv, i) {
-          return '<button type="button" class="pv-chip' + (i === pvState.v ? " active" : "") + '" data-v="' + i + '">' + esc(vv.name) + "</button>";
+          return '<button type="button" class="pv-chip' + (i === pvState.v ? " active" : "") + '" aria-pressed="' + (i === pvState.v) + '" data-v="' + i + '">' + esc(vv.name) + "</button>";
         }).join("") +
         "</div></div>";
     }
@@ -205,6 +262,7 @@
         (g.length > 1 ? '<div class="pv-thumbs">' + thumbs + "</div>" : "") +
       "</div>" +
       '<div class="pv-info">' +
+        '<img class="pv-summary-image" src="' + g[pvState.mi-1] + '" width="88" height="88" alt="' + esc(p.name) + '">' +
         '<span class="product-tag">' + esc(p.tag) + "</span>" +
         "<h3>" + esc(p.name) + "</h3>" +
         (p.note ? '<span class="product-note">' + esc(p.note) + "</span>" : "") +
@@ -258,6 +316,9 @@
     Object.keys(checkoutDraft).forEach(function (key) { var field = form.elements.namedItem(key); if (field) checkoutDraft[key] = field.value; });
   }
   function renderCart() {
+    document.querySelectorAll('.shop-shell .cart-x').forEach(function(button){button.setAttribute('aria-label','Đóng giỏ hàng');});
+    var drawer = document.querySelector('.cart-drawer');
+    if (drawer) drawer.setAttribute('aria-label', view === 'checkout' ? 'Thông tin đặt hàng' : view === 'done' ? 'Xác nhận đặt hàng' : 'Giỏ hàng');
     document.querySelectorAll("[data-cart-count]").forEach(function (b) {
       var n = cartCount();
       b.textContent = n;
@@ -270,7 +331,7 @@
 
     if (!cart.length) {
       inner.innerHTML =
-        '<div class="cart-head"><h3>Giỏ hàng</h3><button type="button" class="cart-x" data-close>' + ICON_X + "</button></div>" +
+        '<div class="cart-head"><h3>Giỏ hàng</h3><button type="button" class="cart-x" aria-label="Đóng giỏ hàng" data-close>' + ICON_X + "</button></div>" +
         '<div class="cart-empty"><p>Giỏ hàng đang trống.</p><a href="/san-pham/" class="btn btn-primary">Xem sản phẩm</a></div>';
       return;
     }
@@ -278,7 +339,7 @@
       var p = byId[it.id]; var cur = variantAt(p, it.v);
       return (
         '<div class="cart-row">' +
-          '<img src="' + p.img + '" alt="">' +
+          '<img src="' + (cur.vimg ? '/assets/products/'+p.id+'/'+String(cur.vimg).padStart(2,'0')+'.webp' : '/assets/media/'+p.id+'-400.webp') + '" width="76" height="76" alt="">' +
           '<div class="cart-row-main">' +
             '<div class="cart-row-name">' + esc(p.name) + "</div>" +
             (cur.name ? '<div class="cart-row-var">' + esc(cur.name) + "</div>" : "") +
@@ -292,12 +353,14 @@
       );
     }).join("");
     inner.innerHTML =
-      '<div class="cart-head"><h3>Giỏ hàng (' + cartCount() + ")</h3><button type=\"button\" class=\"cart-x\" data-close>" + ICON_X + "</button></div>" +
+      '<div class="cart-head"><h3>Giỏ hàng (' + cartCount() + ")</h3><button type=\"button\" class=\"cart-x\" aria-label=\"Đóng giỏ hàng\" data-close>" + ICON_X + "</button></div>" +
       '<div class="cart-list">' + rows + "</div>" +
       '<div class="cart-foot">' +
         '<div class="cart-sub"><span>Tạm tính</span><strong>' + vnd(cartSubtotal()) + "</strong></div>" +
         '<p class="cart-ship">' + esc(cartSubtotal() >= CFG.freeShipThreshold ? 'Đơn này được miễn phí vận chuyển.' : 'Mua thêm ' + vnd(CFG.freeShipThreshold - cartSubtotal()) + ' để được miễn phí vận chuyển. Phí hiện tại tính theo địa chỉ.') + "</p>" +
-        '<button type="button" class="btn btn-primary btn-block" data-checkout>Tiến hành đặt hàng</button>' +
+        '<div class="shipping-progress" aria-hidden="true"><span style="width:' + Math.min(100,cartSubtotal()/CFG.freeShipThreshold*100) + '%"></span></div>' +
+        '<button type="button" class="btn btn-primary btn-block" data-checkout>Tiếp tục đặt hàng <span aria-hidden="true">→</span></button>' +
+        '<p class="cart-safe-note">Kiểm tra thông tin và phí ship trước khi xác nhận.</p>' +
       "</div>";
   }
 
@@ -318,26 +381,29 @@
       return '<div class="co-item"><span>' + esc(p.name) + (cur.name ? " · " + esc(cur.name) : "") + ' <em>×' + it.qty + "</em></span><span>" + vnd(cur.price * it.qty) + "</span></div>";
     }).join("");
     inner.innerHTML =
-      '<div class="cart-head"><button type="button" class="cart-back" data-back>‹ Quay lại</button><h3>Đặt hàng</h3><button type="button" class="cart-x" data-close>' + ICON_X + "</button></div>" +
+      '<div class="cart-head"><button type="button" class="cart-back" data-back>‹ Quay lại</button><h3>Đặt hàng</h3><button type="button" class="cart-x" aria-label="Đóng giỏ hàng" data-close>' + ICON_X + "</button></div>" +
       '<div class="co-scroll">' +
+        '<p class="checkout-steps"><span>1. Giỏ hàng</span><span aria-hidden="true">—</span><span class="current">2. Thông tin nhận hàng</span><span aria-hidden="true">—</span><span>3. Xác nhận</span></p>' +
         '<div class="co-summary">' + rows +
           '<div class="co-total"><span>Tổng tiền hàng</span><strong>' + vnd(total) + "</strong></div>" +
           '<p class="cart-ship">' + esc(CFG.shippingNote) + "</p>" +
         "</div>" +
         '<form class="co-form" novalidate>' +
-          '<label>Họ và tên *<input name="name" required autocomplete="name" maxlength="100" placeholder="Nguyễn Văn A"></label>' +
-          '<label>Số điện thoại *<input name="phone" required type="tel" autocomplete="tel" maxlength="20" placeholder="09xx xxx xxx"></label>' +
+          '<p class="co-error" data-checkout-error role="alert"></p>' +
+          '<label>Họ và tên *<input name="name" required autocomplete="name" minlength="2" maxlength="100" placeholder="Tên người nhận hàng"></label>' +
+          '<label>Số điện thoại *<input name="phone" required type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Số điện thoại nhận hàng"></label>' +
           (CFG.commerceEnabled ? '<label>Tỉnh/Thành *<select name="province" required><option value="">Chọn tỉnh/thành</option></select></label><label>Phường/Xã *<select name="ward" required disabled><option value="">Chọn tỉnh/thành trước</option></select></label>' : '') +
-          '<label>Địa chỉ nhận hàng *<input name="addr" required autocomplete="street-address" maxlength="300" placeholder="' + (CFG.commerceEnabled ? 'Số nhà, đường hoặc thôn/tổ dân phố' : 'Số nhà, đường, phường/xã, tỉnh/thành') + '"></label>' +
+          '<label>Địa chỉ nhận hàng *<textarea name="addr" required autocomplete="street-address" minlength="8" maxlength="300" rows="2" placeholder="' + (CFG.commerceEnabled ? 'Số nhà, đường hoặc thôn/tổ dân phố' : 'Số nhà, đường, phường/xã, tỉnh/thành') + '"></textarea></label>' +
           '<label>Ghi chú<textarea name="note" rows="2" maxlength="1000" placeholder="Thời gian nhận, hướng dẫn giao hàng, ..."></textarea></label>' +
           '<label>Thanh toán<select name="paymentMethod"><option value="COD">COD — nhận hàng rồi thanh toán</option><option value="BANK">' + (CFG.commerceEnabled ? 'Chuyển khoản tự động qua payOS' : 'Chuyển khoản sau khi shop xác nhận') + '</option></select></label>' +
           '<p class="co-shipping-result" data-shipping-result role="status" aria-live="polite"></p>' +
-          '<button type="submit" class="btn btn-primary btn-block">' + (CFG.commerceEnabled ? 'Tính phí & xem tổng tiền' : 'Chuẩn bị nội dung gửi Hanori') + '</button>' +
+          '<button type="submit" class="btn btn-primary btn-block">' + (CFG.commerceEnabled ? 'Tính phí & xem tổng tiền' : 'Kiểm tra yêu cầu đặt hàng') + '</button>' +
           '<p class="co-hint">' + (CFG.commerceEnabled ? 'Bạn sẽ thấy tổng tiền gồm phí vận chuyển trước khi xác nhận. COD thu tiền khi giao hàng; chuyển khoản được xác nhận qua payOS.' : 'Hanori xác nhận đơn và phí vận chuyển qua Zalo trước khi giao hàng hoặc thanh toán.') + '</p>' +
           '<p class="co-hint">Thông tin được dùng để xử lý đơn theo <a href="/chinh-sach-bao-mat/" target="_blank" rel="noopener">chính sách bảo mật</a>. Xem <a href="/chinh-sach-doi-tra/" target="_blank" rel="noopener">đổi trả và bảo hành</a>.</p>' +
         "</form>" +
       "</div>";
     var form = inner.querySelector(".co-form");
+    form.addEventListener('input',function(e){e.target.classList.remove('err');e.target.removeAttribute('aria-invalid');form.querySelector('[data-checkout-error]').textContent='';});
     Object.keys(checkoutDraft).forEach(function (key) { var field = form.elements.namedItem(key); if (field) field.value = checkoutDraft[key]; });
     if (CFG.commerceEnabled) {
       api('/config').then(function (config) {
@@ -376,14 +442,17 @@
       (o.paymentMethod === 'COD' ? 'Thanh toán: COD — thanh toán khi nhận hàng, sau khi Hanori xác nhận đơn.' : 'Thanh toán: CHƯA THANH TOÁN — chờ Hanori xác nhận tổng tiền và hướng dẫn chuyển khoản.');
     window.__hnrOrderText = orderText;
     inner.innerHTML =
-      '<div class="cart-head"><h3>Gửi yêu cầu đặt hàng</h3><button type="button" class="cart-x" data-close>' + ICON_X + "</button></div>" +
+      '<div class="cart-head"><h3>Kiểm tra yêu cầu</h3><button type="button" class="cart-x" aria-label="Đóng giỏ hàng" data-close>' + ICON_X + "</button></div>" +
       '<div class="co-scroll co-done">' +
-        '<div class="done-badge">Nội dung đã sẵn sàng <strong>' + o.code + "</strong></div>" +
-        '<p class="done-lead">Bạn cần gửi nội dung bên dưới qua Zalo để Hanori nhận yêu cầu. Shop sẽ xác nhận hàng, phí vận chuyển và tổng tiền.</p>' +
+        '<div class="done-badge">Chờ gửi cho Hanori · <strong>' + o.code + "</strong></div>" +
+        '<p class="done-lead">Kiểm tra mẫu, số lượng và địa chỉ bên dưới. Sau khi mở Zalo, bạn dán nội dung đã sao chép và gửi cho shop. Hanori sẽ xác nhận hàng, phí ship và tổng tiền.</p>' +
         '<p><strong>' + (o.paymentMethod === 'COD' ? 'COD — thanh toán khi nhận hàng' : 'Chuyển khoản sau khi shop xác nhận') + '</strong></p>' +
+        '<div class="bank-info"><strong>Giao đến</strong><p>' + esc(o.name) + ' · ' + esc(o.phone) + '</p><p>' + esc(o.addr) + '</p></div>' +
+        '<div class="co-summary">' + o.items.map(function(item){return '<div class="co-item"><span>' + esc(item.name) + (item.variant?' · '+esc(item.variant):'') + ' ×' + item.qty + '</span><span>' + vnd(item.price*item.qty) + '</span></div>';}).join('') + '</div>' +
+        '<button type="button" class="text-link" data-edit-checkout>Chỉnh sửa thông tin nhận hàng</button>' +
         '<p class="done-lead"><strong>Tiền hàng: ' + vnd(o.total) + '</strong><br>' + (o.shipping === 0 ? 'Phí vận chuyển: 0đ — đơn đủ điều kiện miễn phí.' : 'Phí vận chuyển: chờ shop báo theo địa chỉ.') + '</p>' +
         '<div class="done-actions">' +
-          '<button type="button" class="btn btn-primary btn-block" data-send="zalo">Gửi đơn qua Zalo</button>' +
+          '<button type="button" class="btn btn-primary btn-block" data-send="zalo">Sao chép yêu cầu & mở Zalo</button>' +
           '<button type="button" class="btn btn-outline btn-block" data-send="messenger">Gửi qua Messenger</button>' +
           '<button type="button" class="btn btn-outline btn-block" data-copyorder>Sao chép nội dung đơn</button>' +
         "</div>" +
@@ -396,18 +465,25 @@
     if (commerceBusy) return;
     var f = form.elements;
     var name = f.name.value.trim(), phone = f.phone.value.trim(), addr = f.addr.value.trim(), note = f.note.value.trim();
+    var error = form.querySelector('[data-checkout-error]');
+    error.textContent = '';
     if (!name || !phone || !addr) {
-      [f.name, f.phone, f.addr].forEach(function (i) { i.classList.toggle("err", !i.value.trim()); });
+      [f.name, f.phone, f.addr].forEach(function (i) { i.classList.toggle("err", !i.value.trim()); i.setAttribute('aria-invalid',String(!i.value.trim())); });
+      error.textContent = 'Điền họ tên, số điện thoại và địa chỉ nhận hàng để tiếp tục nhé.';
+      [f.name, f.phone, f.addr].find(function(i){return !i.value.trim();}).focus();
       return;
     }
+    if (name.length < 2 || addr.length < 8) { error.textContent='Vui lòng điền đủ tên và địa chỉ nhận hàng.'; (name.length<2?f.name:f.addr).focus(); return; }
     phone = phone.replace(/[\s().-]/g, "").replace(/^\+84/, "0");
     if (!/^0[35789]\d{8}$/.test(phone)) {
       f.phone.setCustomValidity("Nhập số điện thoại di động Việt Nam hợp lệ.");
+      error.textContent = 'Số điện thoại chưa đúng. Bạn kiểm tra lại số nhận hàng nhé.';
       f.phone.reportValidity();
       f.phone.addEventListener("input", function () { f.phone.setCustomValidity(""); }, { once: true });
       return;
     }
     rememberCheckout();
+    if (!form.reportValidity()) return;
     if (CFG.commerceEnabled) { submitAutomaticOrder(form); return; }
     var o = {
       code: orderCode(), name: name, phone: phone, addr: addr, note: note,
@@ -459,7 +535,7 @@
     var paid = o.status === 'PAID';
     var cancelled = o.status === 'CANCELLED';
     var cod = o.paymentMethod === 'COD';
-    document.querySelector('.cart-inner').innerHTML = '<div class="cart-head"><h3>Đơn hàng ' + esc(o.code) + '</h3><button type="button" class="cart-x" data-close>' + ICON_X + '</button></div>' +
+    document.querySelector('.cart-inner').innerHTML = '<div class="cart-head"><h3>Đơn hàng ' + esc(o.code) + '</h3><button type="button" class="cart-x" aria-label="Đóng giỏ hàng" data-close>' + ICON_X + '</button></div>' +
       '<div class="co-scroll co-done"><div class="done-badge">' + (paid ? 'Đã xác nhận thanh toán' : cod ? 'Đã ghi nhận đơn COD — chờ shop xác nhận' : cancelled ? 'Thanh toán đã hủy' : 'Đã ghi nhận đơn — chờ thanh toán') + '</div>' +
       '<p>Tiền hàng: ' + vnd(o.subtotal) + '<br>Phí vận chuyển: ' + vnd(o.shipping) + '<br><strong>Tổng thanh toán: ' + vnd(o.total) + '</strong></p>' +
       (paid ? '<p>Hanori đã nhận được xác nhận thanh toán. Shop sẽ kiểm tra hàng và chuẩn bị giao. Bạn có thể trao đổi qua Zalo kèm mã đơn ở trên.</p>' : cod ? '<p>Thanh toán <strong>' + vnd(o.total) + '</strong> cho đơn vị giao hàng khi nhận hàng. Hanori sẽ kiểm tra hàng và liên hệ xác nhận trước khi gửi. Đơn này chưa được đánh dấu đã thanh toán.</p>' : cancelled ? '<p>Đơn đã ghi nhận, giao dịch thanh toán đã hủy. Liên hệ Hanori nếu bạn cần hỗ trợ.</p>' : '<p>Thanh toán qua trang bảo mật của payOS, sau đó quay lại đây kiểm tra trạng thái.</p><a class="btn btn-primary btn-block" href="' + esc(o.checkoutUrl) + '">Thanh toán qua payOS</a><button type="button" class="btn btn-outline btn-block" data-payment-check>Kiểm tra thanh toán</button>') +
@@ -492,6 +568,7 @@
   }
   function toast(msg) {
     var t = document.createElement("div"); t.className = "hnr-toast"; t.textContent = msg;
+    t.setAttribute('role','status');
     document.body.appendChild(t);
     requestAnimationFrame(function () { t.classList.add("show"); });
     setTimeout(function () { t.classList.remove("show"); setTimeout(function () { t.remove(); }, 300); }, 1900);
@@ -535,7 +612,7 @@
       pvState.v = +chip.getAttribute("data-v");
       var pp = byId[pvState.id]; var vv = pp.variants && pp.variants[pvState.v];
       if (vv && vv.vimg) pvState.mi = vv.vimg;
-      renderView(); return;
+      renderView(); document.querySelector('.pv-chip[data-v="'+pvState.v+'"]').focus(); return;
     }
     var gi = t.closest("[data-gi]");
     if (gi) { pvState.mi = +gi.getAttribute("data-gi"); renderView(); return; }
@@ -549,7 +626,7 @@
       return;
     }
     var q = t.closest("[data-q]");
-    if (q) { pvState.qty = Math.min(20, Math.max(1, pvState.qty + +q.getAttribute("data-q"))); renderView(); return; }
+    if (q) { var step=q.getAttribute('data-q');pvState.qty = Math.min(20, Math.max(1, pvState.qty + +step)); renderView(); document.querySelector('[data-q="'+step+'"]').focus();return; }
     if (t.closest("[data-pvadd]")) { addToCart(pvState.id, pvState.v, pvState.qty); closeAll(); view = "cart"; renderCart(); openOverlay(".cart-drawer"); return; }
 
     // cart interactions
@@ -558,16 +635,18 @@
     var dec = t.closest("[data-dec]"); if (dec) { var i2 = +dec.getAttribute("data-dec"); setQty(i2, cart[i2].qty - 1); return; }
     if (t.closest("[data-checkout]")) { if (cart.length) { track('begin_checkout', { value: cartSubtotal(), currency: 'VND', items: analyticsItems(cart) }); view = "checkout"; renderCart(); } return; }
     if (t.closest("[data-back]")) { rememberCheckout(); view = "cart"; renderCart(); return; }
+    if (t.closest('[data-edit-checkout]')) { view='checkout';renderCart();document.querySelector('.co-form input').focus();return; }
     if (t.closest("[data-newcart]")) { view = "cart"; renderCart(); return; }
 
     // done view
     if (t.closest('[data-payment-check]')) { checkPayment(); return; }
     var send = t.closest("[data-send]");
     if (send) {
-      copyText(window.__hnrOrderText).then(function () {
+      var copying = copyText(window.__hnrOrderText);
+      window.open(send.getAttribute("data-send") === "zalo" ? CFG.zalo : CFG.messenger, "_blank", "noopener");
+      copying.then(function () {
         toast("Đã sao chép đơn — dán vào khung chat rồi gửi nhé!");
-        window.open(send.getAttribute("data-send") === "zalo" ? CFG.zalo : CFG.messenger, "_blank", "noopener");
-      });
+      }).catch(function(){toast('Chưa sao chép được. Mở nội dung đơn để sao chép thủ công nhé.');var details=document.querySelector('.order-text');if(details)details.open=true;});
       return;
     }
     if (t.closest("[data-copyorder]")) { copyText(window.__hnrOrderText).then(function () { toast("Đã sao chép nội dung đơn"); }); return; }
@@ -604,18 +683,22 @@
       '<button type="button" class="cskh-launch" data-cskh-toggle aria-label="Hỗ trợ">' + ICON_CHAT + "</button>";
     document.body.appendChild(w);
     var open = false;
-    function set(o) { open = o; w.classList.toggle("open", o); }
+    var panel=w.querySelector('.cskh-panel'), launcher=w.querySelector('.cskh-launch');
+    panel.hidden=true;panel.inert=true;launcher.setAttribute('aria-expanded','false');
+    function set(o,restore) { open = o; w.classList.toggle("open", o);panel.hidden=!o;panel.inert=!o;launcher.setAttribute('aria-expanded',String(o));if(o)panel.querySelector('button').focus();else if(restore!==false)launcher.focus(); }
     w.addEventListener("click", function (e) {
       if (e.target.closest("[data-cskh-toggle]")) set(!open);
       else if (e.target.closest("[data-cskh-close]")) set(false);
     });
     document.addEventListener("click", function (e) {
-      if (open && !e.target.closest(".cskh")) set(false);
+      if (open && !e.target.closest(".cskh")) set(false,false);
     });
+    w.addEventListener('keydown',function(e){if(e.key==='Escape' && open){e.preventDefault();set(false);}});
   }
 
   /* ---------- Init ---------- */
   renderGrids();
+  mountCatalog();
   buildShell();
   mountCartButton();
   mountCSKH();
@@ -631,5 +714,22 @@
   }
   document.addEventListener("click", onClick);
   document.addEventListener("submit", onSubmit);
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(); });
+  document.addEventListener('hanori:add',function(e){
+    var item=e.detail || {}, p=byId[item.id];
+    if(!p || p.contactOnly || !Number.isInteger(item.v) || item.v<0 || item.v>=(p.variants?p.variants.length:1) || !Number.isInteger(item.qty) || item.qty<1 || item.qty>20)return;
+    view='cart';addToCart(item.id,item.v,item.qty);
+    if(item.buy){view='checkout';renderCart();}
+    openOverlay('.cart-drawer');
+  });
+  document.addEventListener("keydown", function (e) {
+    if (!document.body.classList.contains('shop-lock')) return;
+    if (e.key === "Escape") { e.preventDefault(); closeAll(); }
+    if(e.key !== 'Tab')return;
+    var panel=document.querySelector('.cart-drawer.open,.pv-modal.open');if(!panel)return;
+    var focusable=Array.from(panel.querySelectorAll('a[href],button,input,select,textarea,[tabindex="0"]')).filter(function(el){return !el.disabled && el.getClientRects().length;});
+    if(!focusable.length){e.preventDefault();panel.focus();return;}
+    var first=focusable[0],last=focusable[focusable.length-1];
+    if(e.shiftKey && (document.activeElement===first || !panel.contains(document.activeElement))){e.preventDefault();last.focus();}
+    else if(!e.shiftKey && (document.activeElement===last || !panel.contains(document.activeElement))){e.preventDefault();first.focus();}
+  });
 })();
