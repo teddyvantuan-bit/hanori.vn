@@ -368,3 +368,7 @@ body.has-pdp:not(.shop-lock) .hnr-toast { bottom: 108px; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Official Hanori artwork; the SVG preserves the original transparent pixels. */
+.brand .hanori-brand-logo, .footer-brand .hanori-brand-logo { display:block; width:132px; height:auto; max-height:none; border-radius:0; background:transparent; }
+@media (min-width:761px) { .brand .hanori-brand-logo, .footer-brand .hanori-brand-logo { width:154px; } }
